@@ -33,6 +33,7 @@ class fireball_particles : public BLIB::particles {
 		if (cooldown > 0) return;
 		cooldown += max_cooldown;
 
+		BLIB::audio::play(string("fireball_", rand() % 2));
 		particle& p = particle_buffer.emplace_back();
 		p.p.uv_size = { 1.0f / 6.0f, 1.0f };
 

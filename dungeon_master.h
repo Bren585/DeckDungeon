@@ -40,6 +40,9 @@ private:
 
 	int floor_number = 1;
 
+	int rest_bgm = -2;
+	int combat_bgm = -2;
+
 	// Strictly Required for function
 	void init() override {}
 	void update(float elapsed_time) override;

@@ -1,5 +1,6 @@
 #pragma once
 #include "BLIB\particles.h"
+#include "BLIB\audio.h"
 
 class magic_attack_particles : public BLIB::particles {
 	const float max_lifetime = 0.75f;
@@ -30,6 +31,7 @@ class magic_attack_particles : public BLIB::particles {
 		if (cooldown > 0) return;
 		cooldown += max_cooldown;
 
+		BLIB::audio::play(string("fireball_", rand() % 2));
 		particle& p = particle_buffer.emplace_back();
 		p.p.uv_size = { 0.2f, 1.0f };
 

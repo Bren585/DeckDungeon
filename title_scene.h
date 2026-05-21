@@ -1,9 +1,12 @@
 #pragma once
 #include "BLIB\scene.h"
 #include "character_data.h"
+#include "BLIB\audio.h"
 
 class title_scene : public BLIB::flat::scene {
 private:
+	int bgm_id = BLIB::audio::unset;
+
 	BLIB::task_id cc_id = 0;
 
 	BLIB::flat::object bkg;

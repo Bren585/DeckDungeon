@@ -1,5 +1,6 @@
 #include "character_creation_scene.h"
 #include "mouse_collider.h"
+#include "BLIB\audio.h"
 #include <fstream>
 
 string class_names[class_count] = {
@@ -131,6 +132,7 @@ void character_creation_scene::update(float elapsed_time) {
 	textbox.update(0);
 	if (BLIB::collision::check(mouse, &textbox)) {
 		if (click) { 
+			BLIB::audio::play("click");
 			typing = true; 
 			BLIB::input::get_typing_buffer() = name;
 		}
@@ -140,7 +142,7 @@ void character_creation_scene::update(float elapsed_time) {
 	for (int i = 0; i < class_count; i++) {
 		buttons[i].update(0);
 		if (BLIB::collision::check(mouse, &buttons[i])) {
-			if (click)					{ selected_class = (character_class)i; buttons[i].tint = { 0.8f, 1.0f, 0.8f }; }
+			if (click)					{ selected_class = (character_class)i; buttons[i].tint = { 0.8f, 1.0f, 0.8f }; BLIB::audio::play("click"); }
 			if (selected_class != i)	{ buttons[i].tint = { 0.8f, 0.8f, 0.8f }; }
 		} 
 		else if (selected_class == i)	{ buttons[i].tint = { 0.8f, 1.0f, 0.8f }; } 
@@ -149,7 +151,7 @@ void character_creation_scene::update(float elapsed_time) {
 
 	confirm.update(0);
 	if (name != "") {
-		if (BLIB::collision::check(mouse, &confirm))	{ confirm.tint = { 0.6f, 0.8f, 0.6f }; if (click) { BLIB::manager::stage(main_scene_id, 0, BLIB::transition::fade, 0.5f); } }
+		if (BLIB::collision::check(mouse, &confirm))	{ confirm.tint = { 0.6f, 0.8f, 0.6f }; if (click) { BLIB::manager::stage(main_scene_id, 0, BLIB::transition::fade, 0.5f); BLIB::audio::play("click"); } }
 		else											{ confirm.tint = { 0.8f, 1.0f, 0.8f }; }
 	}
 	else {

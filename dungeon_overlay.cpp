@@ -242,6 +242,7 @@ void dungeon_overlay::update_choice(float elapsed_time) {
 					if (listener->allow_deck()) choice--;
 					listener->on_hear(choice);
 					stop_listening();
+					BLIB::audio::play("snap");
 				}
 			}
 			else {
@@ -262,6 +263,7 @@ void dungeon_overlay::update_choice(float elapsed_time) {
 				if (BLIB::input::trigger(key::LClick)) {
 					listener->on_hear(choice_prompts[i].choice);
 					stop_listening();
+					BLIB::audio::play("click");
 					break;
 				}
 			}

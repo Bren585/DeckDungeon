@@ -77,7 +77,9 @@ void title_scene::update(float elapsed_time) {
 		pos.y -= font_height * add_scale + quarter_padding;
 		if (click) {
 			if (BLIB::collision::check(mouse, &delete_button)) { 
-				it = party_data.erase(it); continue; 
+				BLIB::audio::play("click");
+				it = party_data.erase(it); 
+				continue; 
 			}
 		}
 		it++;
@@ -91,6 +93,7 @@ void title_scene::update(float elapsed_time) {
 				if (!cc_id) { cc_id = BLIB::manager::add(new character_creation_scene(get_id())); }
 				else { BLIB::manager::get_task(cc_id)->wake(); }
 				BLIB::manager::stage(cc_id, 0, BLIB::transition::fade, 0.5f);
+				BLIB::audio::play("click");
 			}
 			else add_button.tint = WHITE;
 		}
@@ -106,6 +109,9 @@ void title_scene::update(float elapsed_time) {
 					cc_id = 0;
 				}
 				BLIB::manager::add_and_stage(new start_dungeon_scene(party_data), BLIB::manager::unstage(get_id()), BLIB::transition::fade, 0.5f);
+				BLIB::audio::play("click");
+				BLIB::audio::stop(bgm_id, 1.0f);
+				bgm_id = BLIB::audio::unset;
 			}
 			else start_button.tint = color(0.5f, 1.0f, 0.5f); // hover
 		}
@@ -114,11 +120,16 @@ void title_scene::update(float elapsed_time) {
 	else start_button.tint = color(0.5f, 0.5f, 0.5f); // inactive
 }
 
-void title_scene::idle(float elapsed_time) {}
+void title_scene::idle(float elapsed_time) {
+
+}
 
 void title_scene::on_wake() { 
 	if (cc_id) {
 		party_data.push_back(static_cast<character_creation_scene*>(BLIB::manager::get_scene(cc_id))->get_character_data());
+	}
+	if (bgm_id == BLIB::audio::unset) {
+		bgm_id = BLIB::audio::play("title", 1.0f, true);
 	}
 }
 

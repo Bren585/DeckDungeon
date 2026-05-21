@@ -2,6 +2,7 @@
 #include "character_behavior.h"
 #include "dungeon_scene.h"
 #include "all_particles.h"
+#include "BLIB\audio.h"
 
 constexpr float social_distancing = 2.5f;
 constexpr float jump_height = 12.0f;
@@ -161,6 +162,7 @@ namespace cb {
 		float timer;
 
 		void enter() override {
+			BLIB::audio::play(string("rocks_", rand() % 2));
 			parent->get_model()->animate("Ranged_Magic_Summon", 0, false, 2.0f);
 			duration = parent->get_model()->get_animation("Ranged_Magic_Summon").get_play_duration();
 			make_particle(new summon_particles(duration * 0.75f), parent->get_pos() * float3 { 1, 0, 1 });
@@ -195,6 +197,7 @@ namespace cb {
 	class punch : public character_animation_behavior {
 		character_model* target;
 		void enter() override {
+			BLIB::audio::play(string("punch_", rand() % 8));
 			character_animation_behavior::enter();
 			make_particle(new impact_particles(parent->get_model()->get_animation("Melee_Unarmed_Attack_Punch_A").get_duration() * 0.5f), target->get_pos());
 		}
@@ -239,6 +242,7 @@ namespace cb {
 		float timer = 0;
 
 		void enter() override {
+			BLIB::audio::play("fire_start");
 			parent->get_model()->animate("Ranged_Magic_Spellcasting", true);
 			make_particle(new magic_trail_particles(target->get_pos() - parent->get_pos(), duration), parent->get_pos());
 		}
@@ -276,6 +280,7 @@ namespace cb {
 
 	class magic_skill : public character_animation_behavior {
 		void enter() override {
+			BLIB::audio::play("skill");
 			character_animation_behavior::enter();
 			make_particle(new skill_activate_particles, parent->get_pos());
 		}
@@ -291,7 +296,7 @@ namespace cb {
 	};
 
 	class die : public character_animation_behavior {
-		void add_required() override { parent->start_behavior<stay_dead>(); }
+		void add_required() override { parent->start_behavior<stay_dead>(); BLIB::audio::play("fall_down"); }
 	public:
 		die(character_model* parent) : character_animation_behavior(parent, "Death_A") {}
 	};
