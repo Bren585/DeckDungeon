@@ -1,0 +1,10 @@
+#pragma once
+#include "card_particle.h"
+#include "buff_particle.h"
+#include "debuff_particle.h"
+#include "magic_trail_particle.h"
+#include "fireball_particle.h"
+#include "skill_activate_particle.h"
+#include "summon_particle.h"
+#include "impact_particle.h"
+#include "magic_attack_particle.h"

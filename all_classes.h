@@ -1,0 +1,9 @@
+#pragma once
+#include "armorer.h"
+#include "swordsman.h"
+#include "gambler.h"
+#include "monk.h"
+#include "mage.h"
+#include "shaman.h"
+#include "summoner.h"
+#include "priest.h"

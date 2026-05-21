@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{f3b968be-050a-4c9e-9a32-a7768a282de5}</ProjectGuid>
+    <RootNamespace>BLIBTEMPLATE</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>.\BLIB\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>.\BLIB\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(VC_IncludePath);$(WindowsSDK_IncludePath);.\BLIB\;.\BLIB\cereal-master\include;.\BLIB\DirectXTK-main\Inc;.\BLIB\FBX SDK\2020.3.7\include;.\BLIB\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>_DEBUG</AdditionalUsingDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>.\BLIB\x64\Debug;.\BLIB\DirectXTK-main\Bin\Desktop_2022\x64\Debug;.\BLIB\DirectXTK-main\Audio\Bin\Desktop_2022\x64\Debug;.\BLIB\FBX SDK\2020.3.7\lib\x64\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>BLIB.lib;d3d11.lib;dxgi.lib;DirectXTK.lib;DirectXTKAudioWin8.lib;libfbxsdk-md.lib;libxml2-md.lib;Advapi32.lib;zlib-md.lib</AdditionalDependencies>
+    </Link>
+    <PreBuildEvent>
+      <Command>"$(ProjectDir)BLIB_update.exe"</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(VC_IncludePath);$(WindowsSDK_IncludePath);.\BLIB\;.\BLIB\cereal-master\include;.\BLIB\DirectXTK-main\Inc;.\BLIB\FBX SDK\2020.3.7\include;.\BLIB\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>.\BLIB\x64\Release;.\BLIB\DirectXTK-main\Bin\Desktop_2022\x64\Release;.\BLIB\DirectXTK-main\Audio\Bin\Desktop_2022\x64\Release;.\BLIB\FBX SDK\2020.3.7\lib\x64\release</AdditionalLibraryDirectories>
+      <AdditionalDependencies>BLIB.lib;d3d11.lib;dxgi.lib;DirectXTK.lib;DirectXTKAudioWin8.lib;libfbxsdk-md.lib;libxml2-md.lib;Advapi32.lib;zlib-md.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="assign_floor_buffs.cpp" />
+    <ClCompile Include="assign_level_up.cpp" />
+    <ClCompile Include="begin_floor.cpp" />
+    <ClCompile Include="card_object.cpp" />
+    <ClCompile Include="character.cpp" />
+    <ClCompile Include="character_behavior.cpp" />
+    <ClCompile Include="character_creation_scene.cpp" />
+    <ClCompile Include="character_model.cpp" />
+    <ClCompile Include="choose_action.cpp" />
+    <ClCompile Include="choose_skill.cpp" />
+    <ClCompile Include="choose_target.cpp" />
+    <ClCompile Include="cleanup_hand.cpp" />
+    <ClCompile Include="combat.cpp" />
+    <ClCompile Include="dungeon_overlay.cpp" />
+    <ClCompile Include="log.cpp" />
+    <ClCompile Include="dungeon_master.cpp" />
+    <ClCompile Include="dungeon_scene.cpp" />
+    <ClCompile Include="end_floor.cpp" />
+    <ClCompile Include="level_up.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="model_test.cpp" />
+    <ClCompile Include="mouse_collider.cpp" />
+    <ClCompile Include="revive_players.cpp" />
+    <ClCompile Include="start_dungeon_scene.cpp" />
+    <ClCompile Include="title_scene.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="actions.h" />
+    <ClInclude Include="all_classes.h" />
+    <ClInclude Include="all_particles.h" />
+    <ClInclude Include="all_scenes.h" />
+    <ClInclude Include="armorer.h" />
+    <ClInclude Include="assign_floor_buff.h" />
+    <ClInclude Include="assign_level_up.h" />
+    <ClInclude Include="begin_floor.h" />
+    <ClInclude Include="boss_floor_flag.h" />
+    <ClInclude Include="buff_particle.h" />
+    <ClInclude Include="cards.h" />
+    <ClInclude Include="card_object.h" />
+    <ClInclude Include="card_particle.h" />
+    <ClInclude Include="character.h" />
+    <ClInclude Include="character_behavior.h" />
+    <ClInclude Include="character_creation_scene.h" />
+    <ClInclude Include="character_data.h" />
+    <ClInclude Include="character_model.h" />
+    <ClInclude Include="choice_listener.h" />
+    <ClInclude Include="choose_action.h" />
+    <ClInclude Include="choose_skill.h" />
+    <ClInclude Include="choose_target.h" />
+    <ClInclude Include="class_template.h" />
+    <ClInclude Include="cleanup_hand.h" />
+    <ClInclude Include="combat.h" />
+    <ClInclude Include="coroutines.h" />
+    <ClInclude Include="debuff_particle.h" />
+    <ClInclude Include="log.h" />
+    <ClInclude Include="dungeon_master.h" />
+    <ClInclude Include="dungeon_overlay.h" />
+    <ClInclude Include="dungeon_scene.h" />
+    <ClInclude Include="end_floor.h" />
+    <ClInclude Include="enemy.h" />
+    <ClInclude Include="fireball_particle.h" />
+    <ClInclude Include="gambler.h" />
+    <ClInclude Include="all_behaviors.h" />
+    <ClInclude Include="impact_particle.h" />
+    <ClInclude Include="level_up.h" />
+    <ClInclude Include="load_enemy.h" />
+    <ClInclude Include="mage.h" />
+    <ClInclude Include="magic_attack_particle.h" />
+    <ClInclude Include="magic_trail_particle.h" />
+    <ClInclude Include="model_test.h" />
+    <ClInclude Include="monk.h" />
+    <ClInclude Include="mouse_collider.h" />
+    <ClInclude Include="particle_manager.h" />
+    <ClInclude Include="priest.h" />
+    <ClInclude Include="revive_players.h" />
+    <ClInclude Include="scene_template.h" />
+    <ClInclude Include="shaman.h" />
+    <ClInclude Include="skill_activate_particle.h" />
+    <ClInclude Include="start_dungeon_scene.h" />
+    <ClInclude Include="stats.h" />
+    <ClInclude Include="summoner.h" />
+    <ClInclude Include="summon_particle.h" />
+    <ClInclude Include="swordsman.h" />
+    <ClInclude Include="title_scene.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="KitAnimations.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

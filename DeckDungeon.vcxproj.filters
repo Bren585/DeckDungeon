@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\game logic">
+      <UniqueIdentifier>{6b73c5d2-6b0b-4260-a694-9be0c0d23e0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game logic\characters">
+      <UniqueIdentifier>{9a854d00-fe37-404d-a7d2-283412f2afcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\scenes">
+      <UniqueIdentifier>{36e96a5a-9876-4053-9c1a-96630b7013cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tasks">
+      <UniqueIdentifier>{ec59e0ef-6b35-48b2-b2fe-5868bf07c54e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tasks">
+      <UniqueIdentifier>{1ca53721-58f3-4190-88df-62c1bd7dc077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tasks\begin_floor">
+      <UniqueIdentifier>{90663849-9462-420e-81b9-466ca3dd0c32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tasks\begin_floor">
+      <UniqueIdentifier>{bed24e93-9bfb-4b5a-b7b4-d44ef51212c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tasks\combat">
+      <UniqueIdentifier>{bc50c7bf-728e-457e-a950-a168b83e5189}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tasks\combat">
+      <UniqueIdentifier>{4ce8d7a0-fd47-497e-9150-486ce4ec39e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tasks\end_floor">
+      <UniqueIdentifier>{d08aaa91-ae44-4522-bc07-860ca80a9610}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tasks\end_floor">
+      <UniqueIdentifier>{5c164265-fda2-4dae-b11a-13da62c3efc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scenes">
+      <UniqueIdentifier>{985dc37d-b174-4eec-bcaf-1089adad57ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ui">
+      <UniqueIdentifier>{e55098c7-44d7-4ff6-929a-43f680db39b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ui\characters">
+      <UniqueIdentifier>{a318b818-f098-4a4c-808b-ea8731657b74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui">
+      <UniqueIdentifier>{920d9235-8916-42a5-843e-1c875dd31543}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui\characters">
+      <UniqueIdentifier>{ffe88a18-cae0-4a8b-880a-38a237df6ebd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game_logic">
+      <UniqueIdentifier>{d81955d6-0005-4ce2-84e7-58fa551a0102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ui\particles">
+      <UniqueIdentifier>{f287a710-295a-494b-9dec-3f1889b633a9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dungeon_master.cpp">
+      <Filter>Source Files\tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="begin_floor.cpp">
+      <Filter>Source Files\tasks\begin_floor</Filter>
+    </ClCompile>
+    <ClCompile Include="assign_floor_buffs.cpp">
+      <Filter>Source Files\tasks\begin_floor</Filter>
+    </ClCompile>
+    <ClCompile Include="cleanup_hand.cpp">
+      <Filter>Source Files\tasks\begin_floor</Filter>
+    </ClCompile>
+    <ClCompile Include="combat.cpp">
+      <Filter>Source Files\tasks\combat</Filter>
+    </ClCompile>
+    <ClCompile Include="choose_action.cpp">
+      <Filter>Source Files\tasks\combat</Filter>
+    </ClCompile>
+    <ClCompile Include="choose_target.cpp">
+      <Filter>Source Files\tasks\combat</Filter>
+    </ClCompile>
+    <ClCompile Include="choose_skill.cpp">
+      <Filter>Source Files\tasks\combat</Filter>
+    </ClCompile>
+    <ClCompile Include="end_floor.cpp">
+      <Filter>Source Files\tasks\end_floor</Filter>
+    </ClCompile>
+    <ClCompile Include="level_up.cpp">
+      <Filter>Source Files\tasks\end_floor</Filter>
+    </ClCompile>
+    <ClCompile Include="assign_level_up.cpp">
+      <Filter>Source Files\tasks\end_floor</Filter>
+    </ClCompile>
+    <ClCompile Include="revive_players.cpp">
+      <Filter>Source Files\tasks\end_floor</Filter>
+    </ClCompile>
+    <ClCompile Include="title_scene.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="character_model.cpp">
+      <Filter>Source Files\ui\characters</Filter>
+    </ClCompile>
+    <ClCompile Include="character_behavior.cpp">
+      <Filter>Source Files\ui\characters</Filter>
+    </ClCompile>
+    <ClCompile Include="character.cpp">
+      <Filter>Source Files\game_logic</Filter>
+    </ClCompile>
+    <ClCompile Include="dungeon_scene.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dungeon_overlay.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="mouse_collider.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="card_object.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="character_creation_scene.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="model_test.cpp">
+      <Filter>Header Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="start_dungeon_scene.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="actions.h">
+      <Filter>Header Files\game logic</Filter>
+    </ClInclude>
+    <ClInclude Include="cards.h">
+      <Filter>Header Files\game logic</Filter>
+    </ClInclude>
+    <ClInclude Include="stats.h">
+      <Filter>Header Files\game logic</Filter>
+    </ClInclude>
+    <ClInclude Include="character.h">
+      <Filter>Header Files\game logic\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_template.h">
+      <Filter>Header Files\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="all_scenes.h">
+      <Filter>Header Files\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="title_scene.h">
+      <Filter>Header Files\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="coroutines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dungeon_master.h">
+      <Filter>Header Files\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="begin_floor.h">
+      <Filter>Header Files\tasks\begin_floor</Filter>
+    </ClInclude>
+    <ClInclude Include="assign_floor_buff.h">
+      <Filter>Header Files\tasks\begin_floor</Filter>
+    </ClInclude>
+    <ClInclude Include="cleanup_hand.h">
+      <Filter>Header Files\tasks\begin_floor</Filter>
+    </ClInclude>
+    <ClInclude Include="combat.h">
+      <Filter>Header Files\tasks\combat</Filter>
+    </ClInclude>
+    <ClInclude Include="choose_action.h">
+      <Filter>Header Files\tasks\combat</Filter>
+    </ClInclude>
+    <ClInclude Include="choose_target.h">
+      <Filter>Header Files\tasks\combat</Filter>
+    </ClInclude>
+    <ClInclude Include="armorer.h">
+      <Filter>Header Files\game logic\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="all_classes.h">
+      <Filter>Header Files\game logic\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="choose_skill.h">
+      <Filter>Header Files\tasks\combat</Filter>
+    </ClInclude>
+    <ClInclude Include="boss_floor_flag.h">
+      <Filter>Header Files\tasks\begin_floor</Filter>
+    </ClInclude>
+    <ClInclude Include="end_floor.h">
+      <Filter>Header Files\tasks\end_floor</Filter>
+    </ClInclude>
+    <ClInclude Include="level_up.h">
+      <Filter>Header Files\tasks\end_floor</Filter>
+    </ClInclude>
+    <ClInclude Include="swordsman.h">
+      <Filter>Header Files\game logic\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="gambler.h">
+      <Filter>Header Files\game logic\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="class_template.h">
+      <Filter>Header Files\game logic\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="monk.h">
+      <Filter>Header Files\game logic\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="assign_level_up.h">
+      <Filter>Header Files\tasks\end_floor</Filter>
+    </ClInclude>
+    <ClInclude Include="shaman.h">
+      <Filter>Header Files\game logic\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="revive_players.h">
+      <Filter>Header Files\tasks\end_floor</Filter>
+    </ClInclude>
+    <ClInclude Include="mage.h">
+      <Filter>Header Files\game logic\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="summoner.h">
+      <Filter>Header Files\game logic\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="priest.h">
+      <Filter>Header Files\game logic\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="character_model.h">
+      <Filter>Header Files\ui\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="character_behavior.h">
+      <Filter>Header Files\ui\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="all_behaviors.h">
+      <Filter>Header Files\ui\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="dungeon_scene.h">
+      <Filter>Header Files\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="card_particle.h">
+      <Filter>Header Files\ui\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_manager.h">
+      <Filter>Header Files\ui\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>Header Files\game logic\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="all_particles.h">
+      <Filter>Header Files\ui\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="summon_particle.h">
+      <Filter>Header Files\ui\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="buff_particle.h">
+      <Filter>Header Files\ui\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="debuff_particle.h">
+      <Filter>Header Files\ui\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_activate_particle.h">
+      <Filter>Header Files\ui\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="load_enemy.h">
+      <Filter>Header Files\tasks\begin_floor</Filter>
+    </ClInclude>
+    <ClInclude Include="magic_trail_particle.h">
+      <Filter>Header Files\ui\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="fireball_particle.h">
+      <Filter>Header Files\ui\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="magic_attack_particle.h">
+      <Filter>Header Files\ui\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="impact_particle.h">
+      <Filter>Header Files\ui\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="card_object.h">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="mouse_collider.h">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="choice_listener.h">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="dungeon_overlay.h">
+      <Filter>Header Files\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="character_creation_scene.h">
+      <Filter>Header Files\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="model_test.h">
+      <Filter>Header Files\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="start_dungeon_scene.h">
+      <Filter>Header Files\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="character_data.h">
+      <Filter>Header Files\game logic\characters</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="KitAnimations.txt">
+      <Filter>Header Files\ui\characters</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
