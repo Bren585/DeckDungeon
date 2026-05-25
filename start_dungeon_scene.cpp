@@ -44,6 +44,6 @@ void start_dungeon_scene::init() {
 void start_dungeon_scene::update(float elapsed_time) {
 	BLIB::manager::add(new dungeon_master(players));
 	BLIB::manager::add_and_stage(new dungeon_overlay, 0, BLIB::transition::fade, 0.5f);
-	BLIB::manager::stage(scene_id, 1, BLIB::transition::fade, 0.5f);
+	BLIB::manager::stage(scene_id, 1, BLIB::transition::fade, 2.0f);
 	finish();
 }
