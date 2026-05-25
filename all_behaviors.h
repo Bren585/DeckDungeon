@@ -296,7 +296,12 @@ namespace cb {
 	};
 
 	class die : public character_animation_behavior {
-		void add_required() override { parent->start_behavior<stay_dead>(); BLIB::audio::play("fall_down"); }
+		void enter() override {
+			BLIB::audio::play("fall_down");
+			character_animation_behavior::enter();
+		}
+
+		void add_required() override { parent->start_behavior<stay_dead>(); }
 	public:
 		die(character_model* parent) : character_animation_behavior(parent, "Death_A") {}
 	};

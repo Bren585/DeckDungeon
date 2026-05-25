@@ -15,6 +15,11 @@ void title_scene::init() {
 	const float left_edge		= BLIB::window::size().x * 0.5f + padding;
 	const float right_edge		= BLIB::window::size().x - padding;
 
+	bkg.load_sprite("ui/bkg.png");
+	bkg.set_size(get_size());
+	bkg.pos = pos;
+	bkg.pivot = pivot;
+
 	add_button.make_dummy(GREEN);
 	add_button.pivot = C_TL;
 	add_button.set_collider(new BLIB::flat::aligned_rect_collider(nullptr, add_button.get_size() * 0.5f));
@@ -134,6 +139,8 @@ void title_scene::on_wake() {
 }
 
 void title_scene::draw(BLIB::render_settings rs) const {
+	bkg.render(rs);
+
 	const float padding				= BLIB::window::size().x / 16.0f;
 	const float quarter_padding		= padding * 0.25f;
 	const float sixteenth_padding	= padding * 0.0625f;
@@ -143,22 +150,22 @@ void title_scene::draw(BLIB::render_settings rs) const {
 	const float left_edge			= BLIB::window::size().x * 0.5f + padding;
 	const float right_edge			= BLIB::window::size().x - padding;
 
-	type("Deck Dungeon", get_size().oy() + C_BR * padding, float2{2}, FONT_DEFAULT, WHITE, C_TL);
+	//type("Deck Dungeon", get_size().oy() + C_BR * padding, float2{2}, FONT_DEFAULT, WHITE, C_TL);
 
 	float2 pos = { left_edge, top_edge };
-	pos.y -= type("Party:", pos, float2{ 1 }, FONT_DEFAULT, WHITE, C_TL) + quarter_padding;
+	pos.y -= type("Party:", pos, float2{ 1 }, FONT_DEFAULT, BLACK, C_TL) + quarter_padding;
 
 	for (auto& data : party_data) {
 		delete_button.pos.y = pos.y;
 		delete_button.render(rs);
-		pos.y -= type(data.name, pos, float2{ add_scale }, FONT_DEFAULT, WHITE, C_TL) + quarter_padding;
+		pos.y -= type(data.name, pos, float2{ add_scale }, FONT_DEFAULT, BLACK, C_TL) + quarter_padding;
 		delete_button.update(0);
 		//delete_button.peek_collider()->render_debug(rs);
 	}
 
 	if (party_data.size() < 4) {
 		add_button.render();
-		type("Add Character", pos + C_BR * sixteenth_padding, float2(add_scale), FONT_DEFAULT, WHITE, C_TL);
+		type("Add Character", pos + C_BR * sixteenth_padding, float2(add_scale), FONT_DEFAULT, BLACK, C_TL);
 		//add_button.peek_collider()->render_debug(rs);
 	}
 

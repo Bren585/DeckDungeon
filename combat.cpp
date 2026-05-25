@@ -240,6 +240,10 @@ void combat::update(float elapsed_time) {
 					if		(attacker_action.flags & is_turn_buff ) { target->buff_for_turn (buff); }
 					else if (attacker_action.flags & is_round_buff) { target->buff_for_round(buff); }
 					else if (attacker_action.flags & is_floor_buff) { target->buff_for_floor(buff); }
+
+					if (attacker_action.flags & target_dead_allies && target->alive()) {
+						get_scene()->get_character_model(target->get_id()).start_behavior<cb::relax_end>("Lie_");
+					}
 				}
 
 				for (auto target : targets) {
