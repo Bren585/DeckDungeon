@@ -11,6 +11,7 @@ private:
 
 	BLIB::flat::object bkg;
 	BLIB::flat::object start_button;
+	BLIB::flat::object tutorial_button;
 	BLIB::flat::object add_button;
 	mutable BLIB::flat::object delete_button;
 

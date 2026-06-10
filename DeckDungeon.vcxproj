@@ -164,6 +164,7 @@
     <ClCompile Include="revive_players.cpp" />
     <ClCompile Include="start_dungeon_scene.cpp" />
     <ClCompile Include="title_scene.cpp" />
+    <ClCompile Include="tutorial_scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actions.h" />
@@ -223,6 +224,7 @@
     <ClInclude Include="summon_particle.h" />
     <ClInclude Include="swordsman.h" />
     <ClInclude Include="title_scene.h" />
+    <ClInclude Include="tutorial_scene.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="KitAnimations.txt" />

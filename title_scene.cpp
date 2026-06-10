@@ -3,6 +3,7 @@
 #include "mouse_collider.h"
 #include "character_creation_scene.h"
 #include "start_dungeon_scene.h"
+#include "tutorial_scene.h"
 
 constexpr float add_scale = 0.5f;
 constexpr float start_scale = 2.0f;
@@ -32,6 +33,13 @@ void title_scene::init() {
 	start_button.set_collider(new BLIB::flat::aligned_rect_collider(nullptr, start_button.get_size() * 0.5f));
 	start_button.set_size({ right_edge - left_edge, font_height * start_scale + padding });
 	start_button.get_collider()->set_off(start_button.pivot * start_button.get_size() * -0.5f);
+
+	tutorial_button.make_dummy(WHITE);
+	tutorial_button.pos = { left_edge, padding * 1.5f + start_button.get_size().y };
+	tutorial_button.pivot = C_BL;
+	tutorial_button.set_collider(new BLIB::flat::aligned_rect_collider(nullptr, tutorial_button.get_size() * 0.5f));
+	tutorial_button.set_size({ right_edge - left_edge, font_height * start_scale * 0.25f + padding });
+	tutorial_button.get_collider()->set_off(tutorial_button.pivot * tutorial_button.get_size() * -0.5f);
 
 	delete_button.load_sprite("ui/x.png");
 	delete_button.pivot = C_TR;
@@ -123,6 +131,17 @@ void title_scene::update(float elapsed_time) {
 		else start_button.tint = color(0.8f, 1.0f, 0.8f); // no hover, active
 	}
 	else start_button.tint = color(0.5f, 0.5f, 0.5f); // inactive
+
+	tutorial_button.update(0);
+	if (BLIB::collision::check(mouse, &tutorial_button)) {
+		if (click) {
+			BLIB::manager::add_and_stage(new tutorial_scene, 0, BLIB::transition::fade, 0.5f);
+			BLIB::audio::play("click");
+		}
+		else tutorial_button.tint = color(0.5f, 1.0f, 0.5f); // hover
+	}
+	else tutorial_button.tint = color(0.8f, 1.0f, 0.8f); // no hover, active
+
 }
 
 void title_scene::idle(float elapsed_time) {
@@ -172,6 +191,9 @@ void title_scene::draw(BLIB::render_settings rs) const {
 	start_button.render();
 	type("Enter Dungeon", start_button.pos + C_TR * quarter_padding, float2(start_scale), FONT_DEFAULT, BLACK, C_BL);
 	//start_button.peek_collider()->render_debug(rs);
+
+	tutorial_button.render();
+	type("Tutorial", tutorial_button.pos + C_TR * quarter_padding, float2(start_scale), FONT_DEFAULT, BLACK, C_BL);
 
 	//type(report() == active ? "active" : "inactive", float2{ padding }, float2{ 1 });
 	//type(timer, float2{ padding, padding * 2 }, float2{ 1 });

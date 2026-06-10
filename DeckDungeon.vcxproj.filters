@@ -144,6 +144,9 @@
     <ClCompile Include="start_dungeon_scene.cpp">
       <Filter>Source Files\scenes</Filter>
     </ClCompile>
+    <ClCompile Include="tutorial_scene.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actions.h">
@@ -316,6 +319,9 @@
     </ClInclude>
     <ClInclude Include="character_data.h">
       <Filter>Header Files\game logic\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial_scene.h">
+      <Filter>Header Files\scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

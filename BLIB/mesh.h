@@ -85,7 +85,9 @@ namespace BLIB {
 	public:
 		ID3D11Buffer* const* get_vertices()	const { return vertex_buffer.GetAddressOf(); }
 		ID3D11Buffer* get_indices()	const { return index_buffer.Get(); }
+#ifdef SKIN_GPU
 		ID3D11Buffer* const* get_bone_buffer() const { return bone_buffer.GetAddressOf(); }
+#endif
 
 		struct subset {
 			uint64_t	material_unique_id		{ 0 };
