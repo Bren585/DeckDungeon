@@ -24,5 +24,5 @@ public:
 
 	void reset() { offset_timer = 0; deactivate(); }
 
-	card_suit suit() { return c.suit(); }
+	const card& get_card() { return c; }
 };

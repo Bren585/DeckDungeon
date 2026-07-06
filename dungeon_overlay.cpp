@@ -51,6 +51,8 @@ constexpr float INF_I_H = INF_H - PADDING * 2;
 #define INF_I_BL	{INF_I_L, INF_I_B}
 #define INF_I_WH	{INF_I_W, INF_I_H}
 
+const float2 SCN_C = { CHC_L + CHC_W * 0.5f, LOG_B + LOG_H * 0.5f };
+
 #define BORDER	{ 0.29f, 0.29f, 0.31f }
 #define FILL	{ 0.45f, 0.45f, 0.5f }
 
@@ -147,6 +149,11 @@ void dungeon_overlay::update(float elapsed_time) {
 	}
 
 	update_choice(elapsed_time);
+
+	if (announcements.size() > 0) {
+		if (announcements.front().timer < 0) { announcements.pop(); }
+		else { announcements.front().timer -= elapsed_time; }
+	}
 }
 
 void dungeon_overlay::render_log() const {
@@ -236,6 +243,8 @@ void dungeon_overlay::update_choice(float elapsed_time) {
 		for (int i = 0; i < visible_cards.size(); i++) {
 			card_object* card = visible_cards[i];
 			if (listener && card->is_active() && BLIB::collision::check(card, get_mouse_collider())) { 
+				if (card->get_card().suit_is(no_suit))	{ tooltip = "Play the top card of the deck";		}
+				else									{ tooltip = string{"Play the ", card->get_card()};	}
 				card->select();	
 				if (BLIB::input::trigger(key::LClick)) {
 					int choice = i;
@@ -331,7 +340,16 @@ void dungeon_overlay::draw(BLIB::render_settings rs) const {
 	choice_canvas.render(rs);
 
 	if (tooltip != "") {
-		type(tooltip, BLIB::input::get_mouse_pos(), float2{0.5f});
+		type(tooltip, BLIB::input::get_mouse_pos() - float2(1), float2{ 0.5f }, FONT_DEFAULT, BLACK);
+		type(tooltip, BLIB::input::get_mouse_pos(),				float2{ 0.5f });
+	}
+
+	if (announcements.size() > 0) {
+		announcement front = announcements.front();
+		float a = front.timer / front.max;
+		a = 1 - powf(2 * (a - 0.5f), 8);
+		type(front.message, SCN_C - float2{2},	float2(4), FONT_DEFAULT, color(0, 0, 0, a), C_CC);
+		type(front.message, SCN_C,				float2(4), FONT_DEFAULT, color(1, 1, 1, a), C_CC);
 	}
 	
 	//for (auto& b : prompt_buttons) {
@@ -389,7 +407,7 @@ void dungeon_overlay::start_listening(choice_listener* l) {
 				card_sprites[id].set_rest_pos(card_position);
 				card_sprites[id].reset();
 				visible_cards.push_back(&card_sprites[id]);
-				if (listener->allow_suit() == any_suit || listener->allow_suit() == card_sprites[id].suit()) {
+				if (listener->allow_suit() == any_suit || listener->allow_suit() == card_sprites[id].get_card().suit()) {
 					card_sprites[id].activate();
 				}
 				card_position.x += PADDING + width;

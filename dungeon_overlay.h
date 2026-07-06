@@ -26,6 +26,9 @@ private:
 
 	string tooltip;
 
+	struct announcement { string message; float timer; float max; };
+	std::queue<announcement> announcements;
+
 	// Strictly Required for function
 	void init() override;
 	void update(float elapsed_time) override;
@@ -57,6 +60,8 @@ public:
 
 	void start_listening(choice_listener* l);
 	void stop_listening() { listener = nullptr; choice_prompts.clear(); prompt_buttons.clear(); if (on_deck != no_show) { on_deck = no_show; } }
+
+	void announce(string message, float duration = 2.0f) { announcements.push({ message, duration, duration }); }
 
 	void stop() { finish(); }
 };

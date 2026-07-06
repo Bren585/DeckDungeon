@@ -37,6 +37,7 @@ void dungeon_master::update(float elapsed_time) {
 	YIELD_SUBTASK(begin_floor, floor_number);
 
 	event_log::record("Finished floor generation");
+	get_overlay()->announce("Combat Start!");
 
 	YIELD_SUBTASK(combat);
 
@@ -61,6 +62,7 @@ void dungeon_master::update(float elapsed_time) {
 
 	rest_bgm = BLIB::audio::play("rest", 1.0f, true);
 
+	get_overlay()->announce("Floor Clear!");
 	event_log::record(string("Floor ", floor_number, " cleared!"));
 	for (auto& player : players) {
 		if (player->alive()) {
@@ -69,6 +71,7 @@ void dungeon_master::update(float elapsed_time) {
 	}
 	WAIT(1.0f);
 
+	get_overlay()->announce("Level Up!");
 	YIELD_SUBTASK(end_floor);
 
 	BLIB::manager::unstage(scene_id, BLIB::transition::fade, 1.0f);
@@ -81,6 +84,7 @@ void dungeon_master::update(float elapsed_time) {
 
 	BLIB::audio::play("tpk", 1.0f, true);
 
+	get_overlay()->announce("Game Over!");
 	event_log::record("Game over");
 	event_log::record(string("Your party survived ", floor_number, " floors"));
 

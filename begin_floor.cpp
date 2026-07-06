@@ -9,6 +9,8 @@
 #include "boss_floor_flag.h"
 #include "load_enemy.h"
 
+#include "dungeon_overlay.h"
+
 #define boss 100
 #define highest_spawnrate 4
 
@@ -53,11 +55,13 @@ const string boss_names[13] = {
 
 void begin_floor::update(float elapsed_time) {
 	auto& players = get_players();
+	auto* overlay = get_overlay();
 
 	BEGIN_COROUTINE;
 
+	overlay->announce(string("Floor ", floor_number, " Start!"));
 	event_log::record(string("Starting floor ", floor_number));
-	
+
 	// Enemy Count
 	{ 
 		card floor_card = rand_card();
@@ -187,6 +191,8 @@ void begin_floor::update(float elapsed_time) {
 	if (COIT < enemy_count && enemy_count != boss) { GO_TO_CHECKPOINT(0); }
 
 	YIELD_WHILE(BLIB::manager::find_first_of_type<load_enemy>());
+
+	overlay->announce("Draw Phase!");
 
 	// Player Mulligan / Draw
 	COIT = 0;

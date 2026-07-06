@@ -1,5 +1,6 @@
 #include "cleanup_hand.h"
 #include "dungeon_overlay.h"
+#include "dungeon_scene.h"
 
 void cleanup_hand::init() {
 	if (player->get_hand().size() == 0) {
@@ -10,7 +11,10 @@ void cleanup_hand::init() {
 	}
 }
 
-void cleanup_hand::on_wake() { get_overlay()->start_listening(this); }
+void cleanup_hand::on_wake() { 
+	get_overlay()->start_listening(this); 
+	get_dungeon_scene()->spotlight(player->get_id(), GREEN);
+}
 
 //#include "BLIB\imgui\imgui.h"
 //void cleanup_hand::update(float elapsed_time) {
@@ -60,6 +64,8 @@ void cleanup_hand::end_cleanup() {
 		discarded = true;
 		sleep();
 	}
+
+	get_dungeon_scene()->clear_spotlight();
 }
 
 void cleanup_hand::on_hear(int choice) {
