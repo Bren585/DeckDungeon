@@ -1,6 +1,18 @@
 #pragma once
 #include "shape.h"
 namespace BLIB::debug::draw {
+	/*
+		float2 pos
+			- x, y coordinates of the center of the circle.
+		float r
+			- Radius of the circle.
+		color c
+			- Color of the outline of the circle.
+		int edges
+			- Number of edges used to approximate the circle.
+			- Optional. The default edge count is 12.
+			- The minimum edge count is 4.
+	*/
 	inline void circle(float2 pos, float r, color c, int edges = 12) {
 		assert(edges > 3);
 		unsigned int vertex_count = edges + 1;

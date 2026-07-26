@@ -2,6 +2,31 @@
 #include "object.h"
 #include "collider.h"
 
+/*
+	Entities derive from Objects
+
+	Unlike objects, entities' location variables
+	are protected. Getters / Setters must be used.
+
+	Like objects, entites have both generic, flat, and 
+	full forms.
+
+	While objects are considered static, entities 
+	control their own movement and velocities. They
+	also track if they are on a floor, ceiling, or wall.
+
+	Entities are also influenced by global gravity, which
+	can be changed via entity::set_global_gravity(...), and
+	have a set global terminal velocity, which can be changed
+	via entity::set_global_terminal_velocity.
+
+	Entities have a build in update() function that 
+	handles it's movement as a result of it's velocities, 
+	including gravity and drag. If you override the update() 
+	function for a custom entity, be sure to call the 
+	entity::update() function inside the overriding function. 
+*/
+
 namespace BLIB {
 
 	namespace generic {
@@ -18,28 +43,43 @@ namespace BLIB {
 			virtual ~entity() = default;
 
 			/* Collision Markers */
+			// This function is called when the entity lands on the floor.
 			virtual void on_floored	() {}
+			// This function is called when the entity touches a wall.
 			virtual void on_walled	() {}
+			// This function is called when the entity touches a ceiling.
 			virtual void on_ceiled	() {}
 
+			// Change whether or not the entity is touching the floor.
 			void floor	(bool state = true)	{ if (state && !on_floor	) { on_floored	();	} on_floor	= state; }
+			// Change whether or not the entity is touching the wall.
 			void wall	(bool state = true)	{ if (state && !on_wall		) { on_walled	();	} on_wall	= state; }
+			// Change whether or not the entity is touching the ceiling.
 			void ceil	(bool state = true)	{ if (state && !on_ceil		) { on_ceiled	();	} on_ceil	= state; }
 
+			// Check if the entity is on the floor.
 			bool floored() const { return on_floor; }
+			// Check if the entity is touching a wall.
 			bool walled	() const { return on_wall;	}
+			// Check if the entity is touching the ceiling.
 			bool ceiled	() const { return on_ceil;	}
 
 			/* Render */
+			
 			virtual void render(render_settings settings) const {}
 
 			/* Update */
+
 			virtual void update(float dt) = 0;
 
 			/* Colliders */
+
+			// Assign a collider to the entity. 
+			// This function TAKES OWNERSHIP of the collider.
 			virtual void set_collider(collider* c) = 0;
-			virtual const collider* peek_collider() const = 0;
-			virtual collider* get_collider() = 0;
+
+			virtual			collider* get_collider	()			= 0;
+			virtual const	collider* peek_collider	() const	= 0;
 		};
 	}
 
@@ -61,7 +101,9 @@ namespace BLIB {
 			virtual ~entity() = default;
 
 			/* Globals */
+			// Set the gravity for all entities in the same namespace.
 			static void set_global_gravity				(V g) { gravity = g; }
+			// Set the terminal velocity for all entities in the same namespace.
 			static void set_global_terminal_velocity	(V t) { tvel	= t; }
 
 			static V get_global_gravity() { return gravity; }
@@ -167,14 +209,24 @@ namespace BLIB {
 
 			void set_clr(color c)	{ tint = c; }
 
+			// Load a new sprite via a filename.
 			void load_sprite(string filename)	{ object::load_sprite(filename);	}
+
+			// Assign a sprite to the entity.
+			// This function TAKES OWNERSHIP of the sprite.
 			void set_sprite(sprite* spr)		{ object::set_sprite(spr);			}
+
+			// Make a dummy sprite for the entity. 
+			// The sprite will be a solid color rectangle.
 			void make_dummy(color c)			{ object::make_dummy(c);			}
 
+			// Assign a collider to the entity. 
+			// This function TAKES OWNERSHIP of the collider.
 			void			set_collider	(generic::collider* c)	override { object::set_collider(c);			}
 			const collider* peek_collider	() const				override { return object::peek_collider();	}
 			collider*		get_collider	()						override { return object::get_collider();	}
 
+			// Get the entity's texture animator.
 			texture_animator& get_animator	()								 { return object::peek_animator();	}
 
 			operator const object () const { return *this; }
@@ -215,12 +267,20 @@ namespace BLIB {
 			void update(float elapsed_time) override { entity::_update(elapsed_time); object::update(elapsed_time); }
 
 			/* Object Getters + Setters */
-			void set_model(model* m) { object::set_model(m); }
-			void copy_model(const model* m) { object::copy_model(m); }
+
+			// Assign a model to the entity.
+			// This function TAKES OWNERSHIP of the model.
+			void set_model	(model* m		) { object::set_model(m);	}
+
+			// Copies the given model and assigns the copy to the entity.
+			// This function DOES NOT take ownership of the model.
+			void copy_model	(const model* m	) { object::copy_model(m);	}
 
 			model*			get_model()			{ return object::get_model(); }
 			const model*	get_model() const	{ return object::get_model(); }
 
+			// Assign a collider to the entity. 
+			// This function TAKES OWNERSHIP of the collider.
 			void			set_collider	(generic::collider* c)	override { object::set_collider(c);			}
 			const collider* peek_collider	() const				override { return object::peek_collider();	}
 			collider*		get_collider	()						override { return object::get_collider();	}

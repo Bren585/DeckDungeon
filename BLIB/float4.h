@@ -74,7 +74,6 @@ public:
 	
 	inline float  mag_sq() const	{ return (x * x + y * y + z * z + w * w); }
 	inline float  mag	() const	{ return sqrtf(mag_sq()); }
-	//inline float4 norm()			{ const float m = mag(); if (non_zero(m)) return operator/=(m); else return 0; }
 	inline float4 norm	() const	{ const float m = mag(); if (non_zero(m)) return operator/(m);  else return float4(0); }
 	inline float4 floor	() const	{ return { floorf(x), floorf(y), floorf(z), floorf(w) }; }
 	inline float4 ceil	() const	{ return { ceilf(x), ceilf(y), ceilf(z), ceilf(w) }; }

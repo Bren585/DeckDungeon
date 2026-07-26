@@ -21,6 +21,8 @@ namespace BLIB {
 		render_settings(const render_settings&) = default;
 		render_settings(render_settings&&) = default;
 
+		// render_settings have a complex constructor that allows you to input any setting in any order.
+
 		template <typename... Args,
 			typename = std::enable_if_t<
 				(std::conjunction_v<
@@ -69,6 +71,7 @@ namespace BLIB {
 			return *this;
 		}
 
+		// If a setting is default it will be overwritten. Otherise, the original settings take priority.
 		inline render_settings operator&(const render_settings& alt) const {
 			return {
 				( alt.rs == rasterize		:: DEFAULT					) ? rs : alt.rs,

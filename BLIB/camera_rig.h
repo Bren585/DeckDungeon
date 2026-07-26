@@ -2,28 +2,51 @@
 #include "camera.h"
 #include "object.h"
 
+/*
+	A Camera Rig makes the movement of a camera easier to manage. 
+
+	They automatically handle the camera's position relative to some 
+	anchor object when update() is called.
+
+	Rigs do not automatically create a camera, and are not responsible 
+	for the camera's lifetime. The camera should be managed elsewhere.
+
+	Rigs cam be made 2D in the flat namespace, or 3D in the full namespace.
+
+	The two types of rigs built into the engine are:
+		- static : maintains a fixed offset from the anchor
+		- orbit : maintains a fixed distance from the anchor, but can be freely rotated around it
+*/
+
 namespace BLIB {
 	namespace generic {
 		class camera_rig {
 		protected:
-			camera* cam;
+			camera* cam = nullptr; // A pointer to a Camera. Non-possesive.
+
+			// Sync the rig to the anchor
 			virtual void sync_anchor() = 0;
+			// Sync the camera to the rig
 			virtual void sync_rig	() = 0;
 
 		protected:
 
+			// Automatically adjust the rig and camera to the anchor.
 			void sync() { sync_rig(); sync_anchor(); }
 
 #ifdef _DEBUG
-			mutable std::unique_ptr<generic::object> debug_obj = nullptr;
-			virtual void _init_debug() = 0;
-			virtual void _sync_debug() = 0;
+			mutable std::unique_ptr<generic::object> debug_obj = nullptr; // a debug object to render the camera's position
+			// Create the debug object
+			virtual void _init_debug() = 0; 
+			// Sync the debug object to the rig
+			virtual void _sync_debug() = 0; 
 #endif
 
 		public:
 			camera_rig() {}
 			virtual ~camera_rig() {}
 
+			// When in debug mode, renders the camera.
 			void render_debug() {
 #ifdef _DEBUG
 				if (!debug_obj) { _init_debug(); }
@@ -32,9 +55,12 @@ namespace BLIB {
 #endif
 			}
 
+			// Calls sync() if the rig has a camera attached.
 			void update() { if (cam) { sync(); } };
-			camera* get_camera() { return cam; }
-			void set_camera(camera* c) { cam = c; }
+
+			camera* get_camera()			{ return cam;	}
+			// Assigns a camera to the rig. The rig does NOT take ownership of the camera.
+			void	set_camera(camera* c)	{ cam = c;		}
 		};
 	}
 

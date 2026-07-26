@@ -7,12 +7,14 @@
 
 namespace BLIB {
 
+	// Bone Influence
 	struct bone_inf {
 		uint32_t	index;
 		float		weight;
 		SERIALIZE(index, weight)
 	};
 
+	// A collection of bones. i.e., a bind pose.
 	struct skeleton {
 		struct bone {
 			uint64_t	unique_id		{ 0 };
@@ -49,6 +51,7 @@ namespace BLIB {
 		SERIALIZE(bones)
 	};
 
+	// A collection of vertices and a bind pose.
 	struct mesh {
 		struct vertex {
 			float3		position;
@@ -70,22 +73,26 @@ namespace BLIB {
 
 	private:
 		mutable bool unwrapped = false;
-		mutable std::vector<triangle> triangle_mesh;
+		mutable std::vector<triangle> triangle_mesh; // The mesh decomposed into a group of triangles.
+		// Separate the mesh into triangles. This function is very expensive!
 		void unwrap_triangles() const;
 
 		mutable bool bone_transform_vector_prepped = false;
-		mutable std::vector<matrix> scratch_bone_transforms;
+		mutable std::vector<matrix> scratch_bone_transforms;	// Used in CPU Skinning.
 
 		mutable bool bone_normal_vector_prepped = false;
-		mutable std::vector<matrix> scratch_bone_normals;
+		mutable std::vector<matrix> scratch_bone_normals;		// Used in CPU Skinning.
 
 		mutable bool vertex_vector_prepped = false;
-		mutable std::vector<vertex> scratch_vertices;
+		mutable std::vector<vertex> scratch_vertices;			// Used in CPU Skinning.
 
 	public:
+		// Get the vertex buffer.
 		ID3D11Buffer* const* get_vertices()	const { return vertex_buffer.GetAddressOf(); }
+		// Get the index buffer.
 		ID3D11Buffer* get_indices()	const { return index_buffer.Get(); }
 #ifdef SKIN_GPU
+		// Get the bone buffer.
 		ID3D11Buffer* const* get_bone_buffer() const { return bone_buffer.GetAddressOf(); }
 #endif
 
@@ -110,13 +117,19 @@ namespace BLIB {
 		float4x4 default_global_transform			= MATRIX_ID;
 		float4x4 inverse_default_global_transform	= MATRIX_ID;
 
+		// The minimum extent of the vertices.
 		float3 minimum;
+		// The maximum extent of the vertices.
 		float3 maximum;
 
+		// Calculates the size of the mesh using the minimum and maximum extents.
 		float3 size() const { return maximum - minimum; }
 
+		// initialize D3DX11 buffers.
 		void create_buffers();
+		// update the vertex buffer.
 		void update_buffers(const std::vector<vertex>& vertices) const;
+		// update the bone buffer.
 		void update_bone_buffer(std::vector<float4x4>& bone_transforms) const;
 
 		const std::vector<triangle>& peek_triangles		() const { if (!unwrapped)						{ unwrap_triangles();																				} return triangle_mesh;				}

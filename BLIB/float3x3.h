@@ -6,18 +6,22 @@
 													float3x3
 ************************************************************************************************************************/
 
+// A class used for normalized rotation math
 class float3x3 {
 public:
+	// Rows
 	float3 r[3];
 
 	float3x3() = default;
 
+	// Build the matrix from rows
 	float3x3(const float3& a, const float3& b, const float3& c) {
 		r[0] = a;
 		r[1] = b;
 		r[2] = c;
 	}
 
+	// Build the matrix from euler angles
 	float3x3(const float3& euler_angles) {
 		float3 c = { cosf(euler_angles.x), cosf(euler_angles.y), cosf(euler_angles.z) };
 		float3 s = { sinf(euler_angles.x), sinf(euler_angles.y), sinf(euler_angles.z) };
@@ -26,7 +30,8 @@ public:
 		r[1] = { s.x * s.y * c.z - c.x * s.z,	s.x * s.y * s.z + c.x * c.z, s.x * c.y };
 		r[2] = { c.x * s.y * c.z + s.x * s.z,	c.x * s.y * s.z - s.x * c.z, c.x * c.y };
 	}
-
+	
+	// A 3x3 identity matrix 
 	static float3x3 identity() {
 		return {
 			{ 1, 0, 0 },
@@ -59,6 +64,7 @@ public:
 	float3 rotate		(const float3& t) const { return { dot(t, r[0]), dot(t, r[1]), dot(t, r[2]) }; }
 	float3 inv_rotate	(const float3& t) const { return transpose().rotate(t); }
 
+	// Convert the matrix to euler angles
 	float3 to_euler() const {
 		float roll, pitch, yaw;
 
@@ -78,30 +84,3 @@ public:
 		return { roll, pitch, yaw };
 	}
 };
-
-//inline float3x3 face_to(const float3& f) {
-//	const float3 F = f.norm();
-//	float3 R, U, H = { 0, 1, 0 }; // U Hint
-//	if (fabsf(dot(H, F)) > ONE_APPROX) { H = { 1, 0, 0 }; } // R Hint
-//	R = (H % F).norm();
-//	U = (F % R).norm();
-//	return { R, U, -F };
-//}
-//
-//inline float3x3 head_to(const float3& u) {
-//	const float3 U = u.norm();
-//	float3 R, F, H = { 0, 0, -1 }; // F Hint
-//	if (fabsf(dot(H, U)) > ONE_APPROX) { H = { 1, 0, 0 }; } // R Hint 
-//	R = (H % U).norm();
-//	F = (U % R).norm();
-//	return { R, U, -F };
-//}
-//
-//inline float3x3 side_to(const float3& r) {
-//	const float3 R = r.norm();
-//	float3 F, U, H = { 0, 1, 0 }; // U Hint
-//	if (fabsf(dot(H, R)) > ONE_APPROX) { H = { 0, 0, -1 }; } // F Hint
-//	F = (H % R).norm();
-//	U = (R % F).norm();
-//	return { R, U, -F };
-//}

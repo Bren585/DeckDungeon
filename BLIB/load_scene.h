@@ -3,6 +3,12 @@
 #include "entity.h"
 #include "scene.h"
 
+/*
+	load_scene is used internally by the scene manager to load new scenes before they are staged.
+
+	load_scene_any is an interface that can be used to edit the characteristics of all loading screens.
+*/
+
 namespace BLIB {
 
 	class load_scene_any {
@@ -16,12 +22,19 @@ namespace BLIB {
 		inline static float		spin_speed			= PI2;
 
 	public:
+		// Change the background color of all loading screens.
 		static void set_background		(color c)		{ background_color = c; }
+		// Load a sprite to use as the background of all loadings screens.
 		static void set_background		(string file)	{ background_filename = file; }
+		// Load a sprite to use as the spinning load icon  of all loadings screens.
 		static void set_load_icon		(string file)	{ load_icon_filename = file; }
+		// Set the message in the bottom left  of all loadings screens.
 		static void set_text			(string text)	{ load_text = text; }
+		// Set the color of the loading screen message.
 		static void set_text_color		(color c)		{ text_color = c; }
+		// Set the font of the loading screen message.
 		static void set_text_font		(string f)		{ load_font = f; }
+		// Set the speed of the spin of the loading screen icon.
 		static void set_icon_spin_speed	(float f)		{ spin_speed = f;}
 
 	};

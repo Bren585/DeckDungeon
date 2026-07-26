@@ -37,21 +37,33 @@ namespace BLIB {
 			fullscreen
 		};
 
+		// Startup the window
 		void create(HINSTANCE instance, int cmd_show, WNDPROC window_procedure, const wchar_t* name, IDXGISwapChain* swap_chain_ptr);
+		// Get the HWND
 		HWND get();
 
+		// Queue the window to change it's size.
 		void set_size(float2 size);
+		// React to Windows API
 		void internal_update(float2 size);
+		// Actually change the size of the window, and tell the manager to resize.
 		void resolve_resize();
 
+		// Rename the window.
 		void rename(const wchar_t* name);
 		const wchar_t* name();
 
+		// Change the window to windowed, minimized, or fullscreen.
 		void		set_mode(window_mode new_mode);
+		// Get the current window mode.
 		window_mode mode();
+		// Check if fullscreened.
 		bool		is_fullscreen();
 
+		// Get the window size.
 		float2 size();
+
+		// Convert screen coordinates to window coordinates.
 		float2 screen_to_local(float2 screen_pos);
 
 	}

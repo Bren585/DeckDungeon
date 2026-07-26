@@ -33,6 +33,8 @@ public:
 	}
 
 	inline float3 rgb() const { return { r, g, b }; }
+
+	// For some godforsaken reason some APIs expect rgba in reverse order... so here you go.
 	inline color abgr() const { return { a, b, g, r }; }
 
 	SERIALIZE(r, g, b, a)

@@ -2,6 +2,11 @@
 #include <vector>
 #include <memory>
 
+/*
+	The Hierarchy data structure creates a 
+	plug-and-play parent-child structure.
+*/
+
 template <typename T>
 class hierarchy {
 protected:

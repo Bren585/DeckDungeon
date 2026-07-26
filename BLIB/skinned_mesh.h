@@ -6,6 +6,8 @@
 #include "model.h"
 #include "string.h"
 
+// THIS CLASS IS USED TO LOAD AND STORE FBX MODELS OR MODELS WITH ANIMATIONS
+
 namespace BLIB {
 
 	class skinned_mesh : public model {

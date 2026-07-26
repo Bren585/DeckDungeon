@@ -21,7 +21,9 @@ namespace BLIB {
 	
 	namespace render_target {
 
+		// A D3DX11 Render Target View
 		class view {
+			// Attach all views to the shader.
 			friend void bind_all();
 		private:
 			IDXGISwapChain* const								swap_chain_ptr;
@@ -30,6 +32,8 @@ namespace BLIB {
 			Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	shader_resource_view;
 			Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	depth_shader_resource;
 			float2												size;
+
+			// Pipeline Cache
 
 			view*												cached_views[MAX_VIEWS]	{ nullptr };
 			view*												cached_depth			{ nullptr };
@@ -41,13 +45,23 @@ namespace BLIB {
 			void create_depth_stencil();
 
 		public:
+			// Create a new view, by default window-sized.
 			view(float2 size = window::size(), DXGI_FORMAT format = VIEW_FORMAT_DEFAULT);
+			// Create the main view from the swap chain.
 			view(IDXGISwapChain* swap_chain);
 
+			// clear the render target with the background color.
 			void clear(color bkg);
 			void resize(float2 size);
+			// Assigns the render target to capture incoming render commands in a given slot. 
+			// This render target caches the previous render state.
+			// If a slot is not given, defaults to FOCUS_OVERWRITE, which will capture all incoming renders.
+			// To capture only depth information, use FOCUS_DEPTH.
 			bool focus(int slot = FOCUS_OVERWRITE);
+			// Removes the render target from the rendering pipeline.
+			// Returns the render state to it's cache.
 			void unfocus();
+			// Release all COM objects
 			void release();
 			
 			void copy_SRV_to		(ID3D11ShaderResourceView** dest)	const	{ shader_resource_view.CopyTo(dest); }
@@ -64,11 +78,16 @@ namespace BLIB {
 			float2 get_size() const { return size; }
 		};
 
+		// Initialize the main view.
 		void init(IDXGISwapChain* swap_chain);
+		// Clear the main view.
 		void clear_main();
+		// Resize the main view to a new window size.
 		void resize_main(float2 size);
+		// Focus the main view.
 		void focus_main();
 		void unfocus_main();
+		// Destroy the main view.
 		void release_main();
 		void set_main_background(color c);
 
@@ -79,6 +98,7 @@ namespace BLIB {
 		void unbind();
 		void unfocus_all();
 
+		// A helper class to focus a whole vector of views at once, and then unfocus them when finished.
 		class auto_focus {
 		private:
 			view* views[MAX_VIEWS]{nullptr};
@@ -105,8 +125,10 @@ namespace BLIB {
 #define quick_focus(views) auto_focus _af(views)
 	}
 
+	// set the filepath to save screenshots to.
 	void set_screenshot_filepath(string filepath);
 
+	// schedule a screenshot on the main view.
 	void screenshot(string filename = "screenshot");
 
 	string empty_screenshot_queue();

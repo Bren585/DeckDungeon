@@ -37,13 +37,8 @@ public:
 	inline				float2 operator/=(const float2& that) { return *this = operator/(that);	 }
 	ARITHMETIC inline	float2 operator/=(const A& scale	) { return *this = operator/(scale); }
 
-//#ifdef LH
-//	// LH Cross Product
-//	inline float operator%(float2 that) const { return y * that.x - x * that.y; }
-//#else
-//	// RH Cross Product
+	// Cross Product
 	inline float operator%(float2 that) const { return x * that.y - y * that.x; }
-//#endif
 
 	inline bool operator==(const float2& that) const { return x == that.x && y == that.y; }
 	inline bool operator!=(const float2& that) const { return x != that.x || y != that.y; }
@@ -57,7 +52,6 @@ public:
 
 	inline float  mag_sq() const		{ return (x * x + y * y); }
 	inline float  mag	() const		{ return sqrtf(mag_sq()); }
-	//inline float2 norm()				{ const float m = mag(); if (non_zero(m)) return operator/=(m); else return 0; }
 	inline float2 norm	() const		{ const float m = mag(); if (non_zero(m)) return operator/(m);  else return float2{0}; }
 	inline float2 floor () const		{ return { floorf(x), floorf(y) }; }
 	inline float2 ceil	() const		{ return { ceilf(x), ceilf(y) }; }
@@ -72,7 +66,6 @@ public:
 };
 
 inline float	dot				(float2 a,			float2 b						)	{ return { a.x * b.x + a.y * b.y }; }
-//inline float	tangent_cross	(float2 a,			float2 b						)	{ return a.x * b.y - a.y * b.x; }
 inline float2   clamp			(float2 min,		float2 x,			float2 max	)	{ return { clamp(min.x, x.x, max.x),	clamp(min.y, x.y, max.y)	}; }
 inline float2   wrap			(float2 min,		float2 x,			float2 max	)	{ return { wrap(min.x, x.x, max.x),		wrap(min.x, x.x, max.x)		}; }
 inline float2	lerp			(const float2& a,	const float2& b,	float t		)	{ return a * (1 - t) + b * t; }
@@ -86,12 +79,21 @@ inline float2 float2::rotate(float angle) { return { dot(*this,{ cosf(angle), -s
 // C - center   | C - center
 // B - bottom   | R - right
 
+// Center is Top Left
 #define C_TL float2{ -1,   1  }
+// Center is Top Middle
 #define C_TC float2{  0,   1  }
+// Center is Top Right
 #define C_TR float2{  1,   1  }
+// Center is Middle Left
 #define C_CL float2{ -1,   0  }
+// Center is Dead Center
 #define C_CC float2{  0,   0  }
+// Center is Middle Right
 #define C_CR float2{  1,   0  }
+// Center is Bottom Left
 #define C_BL float2{ -1,  -1  }
+// Center is Bottom Middle
 #define C_BC float2{  0,  -1  }
+// Center is Bottom Right
 #define C_BR float2{  1,  -1  }

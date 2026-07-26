@@ -1,5 +1,10 @@
 #pragma once
 
+/*
+	THIS IS THE ONE SINGLE FILE THAT I, BRENDAN KOETTING, DID NOT WRITE
+	As such, I'm leaving the comments and code as-is.
+*/
+
 #include <windows.h>
 
 class high_resolution_timer

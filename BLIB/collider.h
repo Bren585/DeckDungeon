@@ -4,6 +4,36 @@
 #include "hierarchy.h"
 #include "all_shapes.h"
 
+/*
+	Colliders are used to handle collision interactions between objects and entities.
+
+	A generic::collider is provided, from which the 2D flat::collider and
+	the 3D full::collider are inherited. Colliders can contain other colliders.
+
+	There are three flat::collider classes:
+	- flat::aligned_rect_collider
+	- flat::rect_collider
+	- flat::circle_collider
+
+	There are seven full::collider classes:
+	- full::aabb_collider
+	- full::box_collider
+	- full::sphere_collider
+	- full::cylinder_collider
+	- full::capsule_collider
+	- full::mesh_collider
+	- full::plane_collider
+
+	Colliders have four modes:
+	- none (does cause a collision, but will perform hit detection, ideal for triggers and intangibles)
+	- bully (will never be moved by another collider, ideal for walls and floors)
+	- loser (will never move another collider, ideal for particles and props)
+	- swing (will move a loser but be moved by a bully, ideal for players and enemies)
+
+	Collisions are detected and optionally handled via the collision::check function.
+
+*/
+
 // MESH COLLISIONS ARE DISABLED FOR PERFORMANCE, RAY PICKING IS AVAILABLE
 
 #define NO_COLLISION_2 {-1, {0, 0}}
@@ -24,7 +54,7 @@ namespace BLIB::collision {
 	enum collider_type {
 		none,  // Does not cause collision
 		bully, // Will never move
-		loser, // Will always move
+		loser, // Will always be moved
 		swing  // Will lose to a bully but win against a loser
 	};
 
@@ -35,35 +65,85 @@ namespace BLIB::collision {
 		compromise	// Both will move
 	};
 
+	// Determine which colliders will move.
 	collision_type resolve(collider_type a, collider_type b);
 
+
+	// Check if a collision has occurred between two colliders. Returns the maximum penetration depth and collision information.
+	// If the optional "any" parameter is true, will return the first collision detected, regardless of severity.
 	flat::collision check(const flat::collider* a, const flat::collider* b, bool any = false);
+
+	// Check if a collision has occurred between two colliders. Returns the maximum penetration depth and collision information.
+	// If the optional "any" parameter is true, will return the first collision detected, regardless of severity.
 	full::collision check(const full::collider* a, const full::collider* b, bool any = false);
 
+
+	// Check if a collision has occurted between two objects/entities. Returns the maximum penetration depth and collision information.
+	// By default, if a collision occurred, the objects will be moved to resolve the collision. 
+	// To avoid this, set the optional do_move parameter to false.
 	flat::collision check(flat::object* a, flat::object* b, bool do_move = true);
+
+	// Check if a collision has occurted between two objects/entities. Returns the maximum penetration depth and collision information.
+	// By default, if a collision occurred, the objects will be moved to resolve the collision. 
+	// To avoid this, set the optional do_move parameter to false.
 	flat::collision check(flat::entity* a, flat::entity* b, bool do_move = true);
+
+	// Check if a collision has occurted between two objects/entities. Returns the maximum penetration depth and collision information.
+	// By default, if a collision occurred, the objects will be moved to resolve the collision. 
+	// To avoid this, set the optional do_move parameter to false.
 	flat::collision check(flat::entity* a, flat::object* b, bool do_move = true);
+
+	// Check if a collision has occurted between two objects/entities. Returns the maximum penetration depth and collision information.
+	// By default, if a collision occurred, the objects will be moved to resolve the collision. 
+	// To avoid this, set the optional do_move parameter to false.
 	flat::collision check(flat::object* a, flat::entity* b, bool do_move = true);
 
+	// Check if a collision has occurted between two objects/entities. Returns the maximum penetration depth and collision information.
+	// By default, if a collision occurred, the objects will be moved to resolve the collision. 
+	// To avoid this, set the optional do_move parameter to false.
 	full::collision check(full::object* a, full::object* b, bool do_move = true);
+
+	// Check if a collision has occurted between two objects/entities. Returns the maximum penetration depth and collision information.
+	// By default, if a collision occurred, the objects will be moved to resolve the collision. 
+	// To avoid this, set the optional do_move parameter to false.
 	full::collision check(full::entity* a, full::entity* b, bool do_move = true);
+
+	// Check if a collision has occurted between two objects/entities. Returns the maximum penetration depth and collision information.
+	// By default, if a collision occurred, the objects will be moved to resolve the collision. 
+	// To avoid this, set the optional do_move parameter to false.
 	full::collision check(full::entity* a, full::object* b, bool do_move = true);
+
+	// Check if a collision has occurted between two objects/entities. Returns the maximum penetration depth and collision information.
+	// By default, if a collision occurred, the objects will be moved to resolve the collision. 
+	// To avoid this, set the optional do_move parameter to false.
 	full::collision check(full::object* a, full::entity* b, bool do_move = true);
 
+	// Moves two objects/entites as the result of a collision.
 	void move(flat::object* obj, flat::object* mover, flat::collision penetration, bool both = false);
+	// Moves two objects/entites as the result of a collision.
 	void move(flat::entity* obj, flat::object* mover, flat::collision penetration, bool both = false);
+	// Moves two objects/entites as the result of a collision.
 	void move(flat::entity* obj, flat::entity* mover, flat::collision penetration, bool both = false);
 
+	// Moves two objects/entites as the result of a collision.
 	void move(full::object* obj, full::object* mover, full::collision penetration, bool both = false);
+	// Moves two objects/entites as the result of a collision.
 	void move(full::entity* obj, full::object* mover, full::collision penetration, bool both = false);
+	// Moves two objects/entites as the result of a collision.
 	void move(full::entity* obj, full::entity* mover, full::collision penetration, bool both = false);
 
+	// Cause an entity to update it's landed/floored/ceiled status as the result of a collision.
 	void land(flat::entity* obj, const flat::collision& penetration);
+	// Cause an entity to update it's landed/floored/ceiled status as the result of a collision.
 	void land(full::entity* obj, const full::collision& penetration);
 
+	// Determine if a ray passes through an object/entity. Where/how the intersection occurs is returned via the optional out_position and out_normal parameters.
 	bool ray_pick(const flat::object* obj, const float2& ray_origin, const float2& ray_direction, float2* out_position = nullptr, float2* out_normal = nullptr);
+	// Determine if a ray passes through an object/entity. Where/how the intersection occurs is returned via the optional out_position and out_normal parameters.
 	bool ray_pick(const flat::entity* obj, const float2& ray_origin, const float2& ray_direction, float2* out_position = nullptr, float2* out_normal = nullptr);
+	// Determine if a ray passes through an object/entity. Where/how the intersection occurs is returned via the optional out_position and out_normal parameters.
 	bool ray_pick(const full::object* obj, const float3& ray_origin, const float3& ray_direction, float3* out_position = nullptr, float3* out_normal = nullptr);
+	// Determine if a ray passes through an object/entity. Where/how the intersection occurs is returned via the optional out_position and out_normal parameters.
 	bool ray_pick(const full::entity* obj, const float3& ray_origin, const float3& ray_direction, float3* out_position = nullptr, float3* out_normal = nullptr);
 }
 
@@ -76,17 +156,20 @@ namespace BLIB::generic {
 	class collider : public hierarchy<collider> {
 	private:
 		collider_type type = none;
-		float restitution	= DEFAULT_RESTITUTION;
-		float friction		= DEFAULT_FRICTION;
+		float restitution	= DEFAULT_RESTITUTION;	// Bounciness
+		float friction		= DEFAULT_FRICTION;		// Roughness (Inverse of slipperiness)
 
 	protected:
+		// Clone this collider as it's true (inherited) class.
 		virtual collider* clone_impl(collider* parent) const = 0;
 
+		// Clone this collider and it's children as children of the given parent collider.
 		void weak_clone(collider* parent) const {
 			collider* out = clone_impl(parent);
 			for (auto& child : children) { child->weak_clone(out); }
 		}
 		
+		// Inherited method to define how this collider wishes to be rendered.
 		virtual void _render_debug(render_settings rs) const {}
 
 	public:
@@ -106,12 +189,14 @@ namespace BLIB::generic {
 		float&			imgui_get_friction		() { return friction;		}
 #endif
 
+		// Clone this collider as a generic::collider.
 		std::unique_ptr<collider> clone() const { 
 			auto out = std::unique_ptr<collider>(clone_impl(nullptr)); 
 			for (auto& child : children) { child->weak_clone(out.get()); }
 			return out;
 		};
 
+		// Render the collider as a wireframe in debug mode.
 		void render_debug(render_settings rs) const {
 #ifdef _DEBUG
 			_render_debug(rs);
@@ -125,6 +210,7 @@ namespace BLIB::generic {
 
 namespace BLIB::flat {
 
+	// A struct containing data relevent to resolving 2D collisions.
 	struct collision {
 		float depth;
 		float2 normal;
@@ -132,6 +218,7 @@ namespace BLIB::flat {
 		float friction		= 0;
 
 		collision(float d, float2 n) : depth(d), normal(n) {}
+		// Construct a "Miss." Cannot arbitartily construct a "Hit." (i.e., success must always be false when using this constructor.)
 		collision(bool success) : depth(-1) { assert(!success); }
 
 		collision operator-() const { return { depth, -normal }; }
@@ -169,13 +256,15 @@ namespace BLIB::flat {
 		float2 get_scl() const { return scale * parent_scale; }
 
 		float2 get_pos() const { return parent_position; }
-
+		
+		// Check if a collision occured with another collider. Performs o->collide_with(this), relying on double dispatch to select the correct collision algorithm. 
 		virtual collision collide(const collider* o) const = 0;
 
 		virtual collision collide_with(const aligned_rect_collider*	o) const = 0;
 		virtual collision collide_with(const rect_collider*			o) const = 0;
 		virtual collision collide_with(const circle_collider*		o) const = 0;
 
+		// Determine if a ray passes through this collider. Where/how the intersection occurs is returned via the optional out_position and out_normal parameters.
 		float ray_pick(float2 ray_origin, float2 ray_direction, float2* out_position = nullptr, float2* out_normal = nullptr) const;
 	};
 
@@ -259,6 +348,7 @@ namespace BLIB::flat {
 
 namespace BLIB::full {
 
+	// A struct containing data relevent to resolving 3D collisions.
 	struct collision {
 		float depth;
 		float3 normal;
@@ -266,6 +356,7 @@ namespace BLIB::full {
 		float friction		= 0;
 
 		collision(float d, float3 n) : depth(d), normal(n) {}
+		// Construct a "Miss." Cannot arbitartily construct a "Hit." (i.e., success must always be false when using this constructor.)
 		collision(bool success) : depth(-1) { assert(!success); }
 
 		collision operator-() const { return { depth, -normal }; }
@@ -317,6 +408,7 @@ namespace BLIB::full {
 
 		virtual operator aabb_collider() const = 0;
 
+		// Check if a collision occured with another collider. Performs o->collide_with(this), relying on double dispatch to select the correct collision algorithm. 
 		virtual collision collide(const collider* o) const = 0;
 
 		virtual collision collide_with(const aabb_collider*		o) const = 0;
@@ -327,6 +419,7 @@ namespace BLIB::full {
 		virtual collision collide_with(const mesh_collider*		o) const = 0;
 		virtual collision collide_with(const plane_collider*	o) const = 0;
 
+		// Determine if a ray passes through this collider. Where/how the intersection occurs is returned via the optional out_position and out_normal parameters.
 		float ray_pick(float3 ray_origin, float3 ray_direction, float3* out_position = nullptr, float3* out_normal = nullptr) const;
 
 	};

@@ -7,6 +7,18 @@
 #include "verify.h"
 #include "render_lock.h"
 
+/*
+	The device singleton is a wrapped for both the
+	D3D11 Device and Device Context.
+
+	You can get the device with device::get, and the
+	context with device::context.
+
+	The wrapper also has built in debug mode support.
+	You can add annotations to the GPU commands using
+	the annotate() macro or the annotator class.
+*/
+
 class device {
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device>				device_ptr;

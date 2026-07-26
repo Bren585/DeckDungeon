@@ -12,6 +12,7 @@
 #define  _ASSERT_EXPR_A(expr, expr_str) ((void)0)
 #endif
 
+// If a HRESULT hr has been defined in scope, asserts that it remains in success mode. 
 #define VERIFY _ASSERT_EXPR_A(SUCCEEDED(hr), hr_trace(hr))
 
 inline LPWSTR hr_trace(HRESULT hr)

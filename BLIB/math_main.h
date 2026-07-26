@@ -1,5 +1,8 @@
 #pragma once
 
+// DO NOT INCLUDE THIS FILE, YOU WILL NOT GET THE TOOLS YOU WANT.
+// INCLUDE math.h INSTEAD
+
 #include "DirectXMath.h"
 
 /***********************************************************************************************************************

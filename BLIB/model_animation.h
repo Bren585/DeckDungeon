@@ -5,6 +5,7 @@
 
 namespace BLIB {
 
+	// A helper class for holding 3D animation data.
 	struct animation {
 
 		struct keyframe {

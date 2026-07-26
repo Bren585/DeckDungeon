@@ -2,6 +2,24 @@
 #include "math.h"
 #include "lighting_constants.h"
 
+/*
+
+	There are three types of lights.
+	
+	Skylights imitate the sun, come from infinitely 
+	far away, and comes in parralell rays.
+
+	Ambient light is prescent everywehere and does 
+	not cast shadows.
+
+	Lights (or pointlights) are lights that shine
+	radially from a single point.
+
+	Skylights and Ambient Lights are packed together 
+	into one environment_lights class.
+
+*/
+
 #define SKYLIGHT_DEFAULT				{ -0.5f, -0.5f, -0.5f }
 #define SKYLIGHT_COLOR_DEFAULT			WHITE
 #define SKYLIGHT_INTENSITY_DEFAULT		3

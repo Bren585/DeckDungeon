@@ -4,6 +4,8 @@
 #include "string.h"
 #include "math.h"
 
+// THIS CLASS IS USED FOR NON-FBX MODELS, OR MODELS WITH NO ANIMATIONS.
+
 namespace BLIB {
 
 	class custom_cube;

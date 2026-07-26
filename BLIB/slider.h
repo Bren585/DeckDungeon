@@ -1,6 +1,9 @@
 #pragma once
 #include "math.h"
 
+// This class was a concept that I never finished. It's not totally unusable, but it's not as safe as it should be... so probably just ignore it. 
+// 
+// 
 // Still needs lifetime safety... probably use some kind of subscriber system so that classes can unsub when they die
 
 #define DECLARE_SLIDER(TYPE) void at(TYPE&, TYPE, float, slide_type = slide_lerp);

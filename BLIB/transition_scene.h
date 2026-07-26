@@ -2,6 +2,10 @@
 #include "scene.h"
 #include "manager.h"
 
+/*
+	transition_scene is used internally by the scene manager to transition between two scenes.
+*/
+
 namespace BLIB {
 
 	class transition_scene : public flat::scene {

@@ -44,7 +44,7 @@ public:
 	inline				float3 operator/=(float3 that	) { return *this = operator/(that);  }
 	ARITHMETIC inline	float3 operator/=(A scale		) { return *this = operator/(scale); }
 
-	// cross
+	// Cross Product
 	inline float3 operator%(float3 that) const { return { y * that.z - z * that.y, z * that.x - x * that.z, x * that.y - y * that.x }; } 
 
 	inline bool operator==(const float3& that) const { return x == that.x && y == that.y && z == that.z; }
@@ -59,7 +59,6 @@ public:
 
 	inline float  mag_sq	() const	{ return (x * x + y * y + z * z); }
 	inline float  mag		() const	{ return sqrtf(mag_sq()); }
-	//inline float3 norm	()			{ const float m = mag(); if (non_zero(m)) return operator/=(m); else return 0; }
 	inline float3 norm		() const	{ const float m = mag(); if (non_zero(m)) return operator/(m);  else return float3{0}; }
 	inline float3 floor		() const	{ return { floorf(x), floorf(y), floorf(z) }; }
 	inline float3 ceil		() const	{ return { ceilf(x), ceilf(y), ceilf(z) }; }
@@ -105,11 +104,3 @@ inline float3 minimize(const float3& A, const float3& B) {
 	for (int i = 0; i < 3; i++) { C[i] = minim(A[i], B[i]); }
 	return C;
 }
-
-//inline float3 to_euler(const float3& vector) {
-//	return {
-//		atan2f(vector.x, vector.z),
-//		atan2f(-vector.y, sqrtf(vector.x * vector.x + vector.z * vector.z)),
-//		0
-//	};
-//}

@@ -2,13 +2,29 @@
 #include "shape.h"
 
 namespace BLIB::debug::draw {
-	inline void line(float3 a, float3 b, color c) {
+	/*
+		float3 start
+			- Origin of the line.
+		float3 end
+			- Endpoint of the line.
+		color c
+			- The color of the line.
+	*/
+	inline void line(float3 start, float3 end, color c) {
 		constexpr unsigned int vertex_count = 2;
-		vertex vertices[vertex_count] = { {a, c}, {b, c} };
+		vertex vertices[vertex_count] = { {start, c}, {end, c} };
 		push_to_screen(vertices, vertex_count);
 	}
 
-	inline void line(float2 a, float2 b, color c) {
-		line({ a, 0 }, { b, 0 }, c);
+	/*
+		float2 start
+			- Origin of the line.
+		float2 end
+			- Endpoint of the line.
+		color c
+			- The color of the line.
+	*/
+	inline void line(float2 start, float2 end, color c) {
+		line({ start, 0 }, { end, 0 }, c);
 	}
 }

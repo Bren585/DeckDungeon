@@ -88,24 +88,29 @@ public:
 	quaternion operator*	(float s) const { return float4::operator*(s);	}
 	quaternion operator*=	(float s)		{ return float4::operator*=(s);	}
 
+	// Create a conjugate quaternion
 	quaternion conj() const { return quaternion(-x, -y, -z, w); }
 
+	// Create the inverse quaternion
 	quaternion inv() const {
 		float mgsq = mag_sq();
 		if (mgsq > EPS) return conj() * (1.0f / mgsq);
 		else return identity();
 	}
 
+	// Rotate a vector with this quaternion
 	float3 rotate(const float3& v) {
 		if (!v) return v;
 		return ((*this) * float4{ v, 0 } * float4(conj())).xyz();
 	}
 
+	// Create a quaternion from a vector defining the axis to rotate around, and the amount of rotation.
 	static quaternion from_axis_angle(float3 axis, float angle) {
 		axis = axis.norm();
 		return quaternion{ axis * sinf(angle * 0.5f), cosf(angle * 0.5f) }.norm();
 	}
 
+	// Create a quaternion from euler angles (roll, pitch, yaw)
 	static quaternion from_euler(const float3& rpy) {
 		float3 s = { sinf(rpy.x * 0.5f), sinf(rpy.y * 0.5f), sinf(rpy.z * 0.5f) };
 		float3 c = { cosf(rpy.x * 0.5f), cosf(rpy.y * 0.5f), cosf(rpy.z * 0.5f) };
@@ -118,6 +123,7 @@ public:
 		};
 	}
 
+	// Given a vector, calculate the quaternion neccesary to rotate it to equal the destination vector.
 	static quaternion face_to(const float3& local_vector, const float3& dest_vector) {
 		float d = dot(local_vector, dest_vector);
 		
@@ -142,6 +148,7 @@ public:
 		return identity();
 	}
 
+	// Convert to a matrix
 	operator float3x3() const {
 		float	xx = x * x, yy = y * y, zz = z * z,
 				xy = x * y, xz = x * z, yz = y * z,
@@ -154,6 +161,7 @@ public:
 		};
 	}
 
+	// Convert to euler angles (pitch, yaw, roll)
 	float3 to_euler() {
 		matrix M{ DirectX::XMMatrixRotationQuaternion(xmvector(*this)) };
 
@@ -167,6 +175,7 @@ public:
 	SERIALIZE(x, y, z, w)
 };
 
+// Spherical Lerp
 inline quaternion slerp(const quaternion& a, quaternion b, float t) {
 	float d = dot(a, b);
 	

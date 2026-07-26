@@ -8,6 +8,7 @@
 
 typedef DirectX::XMMATRIX matrix;
 
+// Remove scale component for proper normal safety.
 inline matrix inverse3x3(const matrix& m) {
 	matrix trunc = m;
 	trunc.r[3] = DirectX::XMVectorSet(0, 0, 0, 1);

@@ -24,7 +24,11 @@ namespace BLIB {
 
 		void init();
 		void uninit();
+
+		// Bind the lights to the shader and calculate shadows.
 		void bind_lights (const generic::scene* geometry, const environment_lights* scene_lights, const std::vector<light>* lights);
+
+		// Bind the lights to the shader and calculate shadows.
 		inline void bind_lights (const generic::scene* geometry) { bind_lights(geometry, nullptr, nullptr); }
 
 #ifdef _DEBUG

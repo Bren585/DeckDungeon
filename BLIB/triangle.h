@@ -20,13 +20,14 @@ public:
 	triangle() {}
 	triangle(const float3& a, const float3& b, const float3& c) : A(a), B(b), C(c) {}
 
-	// Assumes CW Winding
+	// Calculates the normal of the triangle face, assuming CW Winding
 	float3 norm() const { return ((B - A) % (C - A)).norm(); }
 	float3 centroid() const { return (A + B + C) / 3.0f; }
 
 	SERIALIZE(A, B, C)
 };
 
+// Returns true if the given ray intersects the given triangle.
 inline bool triangle_intersection(const triangle& tri, const float3& origin, const float3& ray, float3* out_int_point, float3* out_int_normal) {
 	const float3 AB = tri.B - tri.A;
 	const float3 AC = tri.C - tri.A;

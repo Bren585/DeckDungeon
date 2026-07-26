@@ -8,6 +8,38 @@
 
 #define DEFAULT_BACKGROUND		BLACK
 
+/*
+
+	scene derive from status and canvas.
+	In other words, they contain both logic and graphics.
+
+	Unlike a status, a scene is asleep by default. When a scene
+	is staged, it is automatically woken by the manager.
+
+	When making a custom scene, the following functions must be overridden:
+	
+	status::init
+		- called async while being initialized. As much as possible, 
+		  initialization should be done here instead of the constructor.
+	status::update
+		- called every frame while awake. The "logic" of the scene.
+	status::idle
+		- called every frame while asleep.
+	scene::draw
+		- all render calls should be made inside this function.
+
+	The following functions are available to be overridden:
+
+	status::kill
+		- called just before the scene is destroyed. This is an
+		  opportunity to release resources or stop processes.
+	status::on_wake
+		- called when the scene is woken.
+	status::on_sleep
+		- called when the scene is put to sleep.
+
+*/
+
 namespace BLIB {
 
 	class camera;
@@ -27,7 +59,9 @@ namespace BLIB {
 			void on_load() override { force_sleep(); }
 
 		protected:
+			// All render calls should be made inside this function.
 			virtual void draw(render_settings = {}) const	{}
+			// This is called when the window is resized. UI changes should be made here.
 			virtual void on_resize()						{}
 
 		public:
@@ -53,12 +87,19 @@ namespace BLIB {
 			const std::vector<light>&	get_lights			() const				{ return lights; }
 
 			virtual ~scene() = default;
+
+			// Called asynchronously the first time the scene is ticked. 
 			virtual void init	()						override = 0;
+			// Called every frame while awake.
 			virtual void update	(float elapsed_time)	override = 0;
+			// Called every frame while asleep
 			virtual void idle	(float elapsed_time)	override = 0;
-			//// inherited from status
-			//virtual void kill() {}
-			//virtual void wake() {}
+
+			////	inherited methods from status
+			// 
+			// virtual void kill() {}
+			// virtual void on_wake() {}
+			// virtual void on_sleep() {}
 
 			virtual void _render(const camera* cam) const = 0;
 			virtual void render(const camera* cam = nullptr, const environment_lights* scene_lights = nullptr, const std::vector<light>* lights = nullptr) const;
@@ -66,6 +107,7 @@ namespace BLIB {
 	}
 
 	namespace flat {
+		// A scene containing only 2D elements
 		class scene : public generic::scene {
 			friend class camera_scene;
 		private:
@@ -77,21 +119,27 @@ namespace BLIB {
 	}
 
 	namespace full {
+		// A scene containing 3D elements.
 		class scene : public generic::scene {
 		private:
 			static constexpr UINT geometry_layer_count = 5;
 
 			Microsoft::WRL::ComPtr<ID3D11Buffer> point_buffer;
+			mutable Microsoft::WRL::ComPtr<ID3D11Buffer> constant_buffer;
 			std::unique_ptr<render_target::view> geometry_buffer[MAX_VIEWS];
 			void _on_resize() override { for (int i = 0; i < geometry_layer_count; i++) geometry_buffer[i]->resize(get_view_size()); }
 
 			void _render(const camera* cam) const override;
 
 		protected:
+			// Render geometry that casts shadows.
 			void opaque_pass		(const camera* cam) const;
+			// Renders lighting and shadows.
 			void lighting_pass		()					const;
+			// Renders geometry that does not interact with light.
 			void transparent_pass	(const camera* cam) const;
 
+			// Like draw, this is called every frame. Render calls for objects that do not cast shadows should be made here to improve performance.
 			virtual void draw_transparent() const {}
 
 		public:
@@ -105,6 +153,8 @@ namespace BLIB {
 				geometry_buffer[6] = nullptr;
 				geometry_buffer[7] = nullptr;
 				make_point_buffer(point_buffer.GetAddressOf());
+				make_constant_buffer(constant_buffer.GetAddressOf());
+				update_point_buffer(point_buffer.Get(), float2{ 0 }, float2{ 1 }, C_BL, 0, float2{ 0 }); // Fill the point buffer with one single point.
 			}
 			virtual ~scene() {}
 
@@ -114,6 +164,7 @@ namespace BLIB {
 		};
 	}
 
+	// A scene that only exists to take a picture of another 3D scene.
 	class camera_scene : protected flat::scene {
 	private:
 		generic::scene* target_scene;
