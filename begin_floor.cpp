@@ -14,6 +14,11 @@
 #define boss 100
 #define highest_spawnrate 4
 
+#define CREATE_ENEMY	0
+#define PLAYER_MULLIGAN 1
+#define BUFF_REROLL		2
+
+
 const std::vector<int> spawn_rates[highest_spawnrate] = {
 	{0, 7, jack},
 	{0, 5, 9, king},
@@ -62,12 +67,14 @@ void begin_floor::update(float elapsed_time) {
 	overlay->announce(string("Floor ", floor_number, " Start!"));
 	event_log::record(string("Starting floor ", floor_number));
 
-	// Enemy Count
+	// 敵数
 	{ 
+		// 敵数をカードで決める
 		card floor_card = rand_card();
 		event_log::record(string("Generating floor with ", floor_card));
 		get_scene()->get_pm().add(new card_particle(floor_card), scene_center);
 
+		// spawnrateにより、カード値で敵数決める
 		enemy_count = boss;
 		const std::vector<int>& spawn_rate = spawn_rates[players.size() > highest_spawnrate ? highest_spawnrate - 1 : players.size() - 1];
 		for (int i = 0; i < spawn_rate.size(); i++) {
@@ -77,7 +84,7 @@ void begin_floor::update(float elapsed_time) {
 			}
 		}
 
-		if (enemy_count == boss) {
+		if (enemy_count == boss) { // ボス
 			event_log::record("It's a boss floor!");
 			enemy_base = {
 				4 + floor_number,								// attack
@@ -85,9 +92,9 @@ void begin_floor::update(float elapsed_time) {
 				floor_number,									// luck
 				10 * int(players.size()) + (3 * floor_number)	// health
 			};
-			BLIB::manager::add(new boss_floor_flag);
+			BLIB::manager::add(new boss_floor_flag); // ボスフラグを用意
 		}
-		else {
+		else { // 普通敵
 			event_log::record(string("There are ", enemy_count, " enemies"));
 			enemy_base = {
 				2 + floor_number,		// attack
@@ -98,26 +105,28 @@ void begin_floor::update(float elapsed_time) {
 		}
 	}
 
-	// Enemy Spawning
+	// 敵作成
 	COIT = 0;
-	SET_CHECKPOINT(0);
+	SET_CHECKPOINT(CREATE_ENEMY);
 
 	{
 		buff_players = false;
 
-		SET_CHECKPOINT(2);
+		SET_CHECKPOINT(BUFF_REROLL);
 		WAIT(1.0f);
 
 		{
+			//　敵のバッフ
 			card buff_card = rand_card();
 			get_scene()->get_pm().add(new card_particle(buff_card), scene_center);
 
-			if (buff_card.suit_is(diamond)) {
+			if (buff_card.suit_is(diamond)) { // 敵ではなくプレイヤーへバッフ
 				buff_players = !buff_players;
 				event_log::record(string("Floor buff ", (buff_players ? "goes to a player!" : "returns to the enemy")));
-				GO_TO_CHECKPOINT(2);
+				GO_TO_CHECKPOINT(BUFF_REROLL);
 			}
 
+			//　敵クラス
 			stats floor_buff;
 			string buff_type;
 			switch (buff_card.suit()) {
@@ -145,14 +154,17 @@ void begin_floor::update(float elapsed_time) {
 				(buff_players ? "a player!" : "the enemy")
 			));
 
+			//　ボスモデルと名前
 			if (enemy_count == boss) { enemy_name = boss_names[buff_card.face() - 1]; model_name = "Skeleton_Warrior"; }
+			//　普通敵名前
 			else { enemy_name = names[buff_card.face() - 1]; }
 			string message("A ", enemy_name, " spawned!");
 			event_log::record(message);
 
-
 			enemy_stats = enemy_base;
+			//実際にバッフを行う
 			if (buff_players) {
+				// プレイヤー一人なら自動にバッフ
 				if (players.size() == 1) {
 					if (buff_card.suit_is(heart)) {
 						players[0]->heal(floor_buff.health);
@@ -164,12 +176,13 @@ void begin_floor::update(float elapsed_time) {
 					);
 				}
 				else {
+					//　誰がバッフを受けるか選択する
 					BLIB::manager::add(new assign_floor_buff(floor_buff));
 				}
 			}
 			else { enemy_stats += floor_buff; }
 
-			if (enemy_count != boss) {
+			if (enemy_count != boss) { // ボスでない場合、体力もカードにより
 				if (buff_card.face() < 2) {
 					enemy_stats.health = 1;
 					enemy_stats.attack *= 2;
@@ -179,36 +192,43 @@ void begin_floor::update(float elapsed_time) {
 			}
 		}
 
+		// 前の敵作成完了まで待ちます
 		YIELD_WHILE(BLIB::manager::find_first_of_type<load_enemy>());
+		//　敵を生み出す
 		BLIB::manager::add(new load_enemy(enemy_name, model_name, enemy_stats));
 	}
 
 	WAIT(1.0f);
 
+	//　プレイヤー選択の間、待ちます
 	YIELD_WHILE(BLIB::manager::find_first_of_type<assign_floor_buff>());
 
+	//　敵数に繰り返し
 	COIT++;
-	if (COIT < enemy_count && enemy_count != boss) { GO_TO_CHECKPOINT(0); }
+	if (COIT < enemy_count && enemy_count != boss) { GO_TO_CHECKPOINT(CREATE_ENEMY); }
 
+	//　敵作成完了まで待ちます
 	YIELD_WHILE(BLIB::manager::find_first_of_type<load_enemy>());
 
 	overlay->announce("Draw Phase!");
 
-	// Player Mulligan / Draw
+	// プレイヤー手札の捨てる・引く
 	COIT = 0;
-	SET_CHECKPOINT(1);
+	SET_CHECKPOINT(PLAYER_MULLIGAN);
 
 	if (!players[COIT]->has_flag(is_thrall)) {
 		YIELD_SUBTASK(cleanup_hand, players[COIT]);
 	}
 
+	//　前のバッフリセット
 	players[COIT]->start_floor();
-	if (players[COIT]->has_flag(summons)) {
+	if (players[COIT]->has_flag(summons)) { // 召喚士のモンスター
 		players.push_back(new thrall(players[COIT]));
 	}
 
+	//　プレイヤー数に繰り返し
 	COIT++;
-	if (COIT < players.size()) { GO_TO_CHECKPOINT(1); }
+	if (COIT < players.size()) { GO_TO_CHECKPOINT(PLAYER_MULLIGAN); }
 
 	finish();
 

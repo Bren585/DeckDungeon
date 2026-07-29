@@ -24,7 +24,8 @@ start_dungeon_scene::start_dungeon_scene(const std::vector<character_data>& part
 
 void start_dungeon_scene::init() {
 	for (auto& data : party_data) { players.push_back(create_character_from_data(data)); }
-
+	
+	////デバッグ用
 	//players.push_back(new shaman("Shaman"));
 	//players.push_back(new monk("Monk"));
 	//players.push_back(new priest("Priest"));

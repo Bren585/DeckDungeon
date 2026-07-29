@@ -10,66 +10,6 @@ revive_players::revive_players(character* shaman, std::vector<character*>& dead_
 	//sacrifice.resize(dead_players.size(), 0);
 }
 
-//int sacrifice_to_health(int sacrifice) {
-//	return sacrifice > 5 ? 3 + (sacrifice - 5 * 6) : 0;
-//}
-
-//#include "BLIB\imgui\imgui.h"
-//void revive_players::update(float elapsed_time) {
-//	if (dead_players.size() == 0 || shaman->get_stats().attack < 5) {
-//		finish();
-//		return;
-//	}
-//
-//	string label;
-//
-//	if (ImGui::Begin("Revive dead players")) {
-//
-//		label = string("Reviving a dead player requires ", shaman->get_name(), " to sacrifice 5 attack");
-//		ImGui::Text(label);
-//		ImGui::Text("A revived player has 3 health. Each additional attack sacrificed will heal 6 health.");
-//
-//		label = string(shaman->get_name(), " has ", sacrifice_pool, " attack");
-//		ImGui::Text(label);
-//		ImGui::Text("WARNING: Dead players who are not revived now are dead FOREVER.");
-//
-//		for (int i = 0; i < sacrifice.size(); i++) {
-//			auto& player		= dead_players[i];
-//			auto& sacrificed	= sacrifice[i];
-//			int health = sacrifice_to_health(sacrificed);
-//
-//			label = string(player->get_name(), " ", health, " / ", player->get_stats().health);
-//			ImGui::Text(label);
-//			ImGui::SameLine();
-//
-//			if (sacrificed == 0) {
-//				label = string("+", i);
-//				if (ImGui::Button(label) && sacrifice_pool > 5) { sacrifice_pool -= 5; sacrificed = 5; }
-//			}
-//			else {
-//				label = string("-", i);
-//				if (ImGui::Button(label)) { 
-//					if (sacrificed == 5) { sacrificed = 0; sacrifice_pool += 5; }
-//					else { sacrificed--; sacrifice_pool++; }
-//				}
-//				ImGui::SameLine();
-//				label = string("+", i);
-//				if (ImGui::Button(label) && sacrifice_pool > 0) { sacrifice_pool--; sacrificed++; }
-//			}
-//		}
-//
-//		if (ImGui::Button("Confirm")) {
-//			for (int i = 0; i < sacrifice.size(); i++) {
-//				dead_players[i]->heal(sacrifice_to_health(sacrifice[i]));
-//				shaman->grow_stats(stats(-sacrifice[i], 0, 0, 0));
-//				get_scene()->get_character_model(dead_players[i]->get_id()).start_behavior<cb::relax_end>("Lie_");
-//			}
-//			finish();
-//		}
-//	}
-//	ImGui::End();
-//}
-
 void	revive_players::on_wake		() { get_overlay()->start_listening(this);	}
 int		revive_players::show_info	() { return shaman->get_id();				}
 

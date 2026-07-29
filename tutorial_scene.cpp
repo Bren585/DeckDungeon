@@ -10,6 +10,7 @@ void tutorial_scene::init() {
 }
 
 void tutorial_scene::update(float elapsed_time) {
+	//‰½‚©‰Ÿ‚µ‚½‚çƒ^ƒCƒgƒ‹‚É–ß‚é
 	if (timer > 1.5f && BLIB::input::trigger()) {
 		finish();
 		BLIB::manager::stage(BLIB::manager::find_first_of_type<title_scene>(), 0, BLIB::transition::fade, 0.5f);

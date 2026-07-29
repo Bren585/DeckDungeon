@@ -41,6 +41,7 @@ public:
 	character_creation_scene(BLIB::task_id id) : main_scene_id(id) {}
 	~character_creation_scene() {}
 
+	//ì‚Á‚½ƒLƒƒƒ‰î•ñ‚ğ‚±‚ê‚Å‰ï“¾
 	character_data get_character_data();
 	void stop() { finish(); }
 };

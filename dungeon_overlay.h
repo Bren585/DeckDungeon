@@ -58,6 +58,7 @@ public:
 	void show_info(int id) { on_deck = id; }
 	void clear_info() { on_deck = no_show; }
 
+	//‘I‘ð‚ð”C‚¹‚é
 	void start_listening(choice_listener* l);
 	void stop_listening() { listener = nullptr; choice_prompts.clear(); prompt_buttons.clear(); if (on_deck != no_show) { on_deck = no_show; } }
 

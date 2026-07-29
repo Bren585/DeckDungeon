@@ -2,6 +2,7 @@
 #include "BLIB/scene.h"
 #include "character_data.h"
 
+//ダンジョン入る前のロード画面
 class start_dungeon_scene : public BLIB::flat::scene {
 private:
 	const std::vector<character_data>& party_data;

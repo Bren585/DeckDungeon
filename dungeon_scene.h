@@ -46,18 +46,21 @@ public:
 	dungeon_scene() {}
 	~dungeon_scene() {}
 
+	//キャラを登録
 	void register_character_model(int id, string filename, string alt_texture, character* character);
 	character_model& get_character_model(int id) { 
 		if (character_models.find(id) != character_models.end()) return character_models[id];
 		else return enemy_models[id];
 	}
 
+	//　パーティクルシステムを会得
 	particle_manager& get_pm() { return pm; }
 
 	void clear_enemies() { enemy_models.clear(); }
 
 	void clear_player(int id) { graveyard.push_back(id); }
 
+	//　キャラに光を
 	void spotlight(int it, color c = WHITE);
 
 	void clear_spotlight();

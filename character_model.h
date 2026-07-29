@@ -10,6 +10,7 @@ private:
 	float3 home;
 	bool faces_forward;
 
+	// ビヘイビア
 	std::queue			<std::unique_ptr<character_behavior>>	state_queue		= {};
 	std::unordered_set	<std::type_index>						in_queue		= {};
 
@@ -21,11 +22,10 @@ private:
 	}
 
 	void dequeue();
-
 	void next_state();
 
 public:
-	character_model() { assert(false); } // to be nice to set only
+	character_model() { assert(false); } // to be nice to std::set only, never to be used
 	character_model(float3 home, string filename, string alt_texture = "none", bool faces_forward = true);
 	character_model(character_model&& o) noexcept : BLIB::full::object(o) {
 		home = o.home;

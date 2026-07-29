@@ -37,18 +37,21 @@ constexpr float enemy_spawn_z = 16.0f;
 //}
 
 void dungeon_scene::init() {
+	//シーン設定
 	cam = BLIB::perspective_camera(BLIB::window::size(), float3{ 18.5f, 25, -23.5f }, float3{ 8.5f, 0, 8.5f });
 	set_camera(&cam);
 
 	pos = {-140, 80};
 	get_scene_lights().set_skylight_direction({ -0.458f, -0.772f, 0.441f });
 
+	//バックグラウンド用意
 	backdrop.set_model(BLIB::load_fbx("dungeon", false, BLIB::LH_Y));
 	backdrop.set_qtn(quaternion::face_to({ 0, 0, 1 }, { -1, 0, 0 }));
 	float3 size = backdrop.get_size();
 	backdrop.add_pos(float3{ size.x * 2, 0, size.z * 2 });
 	backdrop.set_scl(float3{ 0.01f });
 
+	//スポットライト用意
 	BLIB::light& spot_light = get_lights().emplace_back();
 	spot_light.disable();
 	spot_light.set_direction(float3(-0.1f, -1, 0).norm());
@@ -68,33 +71,31 @@ void dungeon_scene::stop() {
 
 void dungeon_scene::update(float elapsed_time) {
 	idle(elapsed_time);
-
-	//auto* dm = GET_DM(BLIB::manager::find_first_of_type<dungeon_master>());
-	//for (auto& player : dm->peek_players()) { imgui_character_window(player); }
-	//for (auto& enemy : dm->peek_enemies()) { imgui_character_window(enemy); }
-
 }
 
 void dungeon_scene::idle(float elapsed_time) {
 	for (auto& it : character_models) { it.second.update(elapsed_time); }
 	for (auto& it : enemy_models) { it.second.update(elapsed_time); }
 
+	//死んでいるキャラをクリア
 	for (auto it = graveyard.begin(); it != graveyard.end(); ) {
 		if (character_models.find(*it) == character_models.end()) { it = graveyard.erase(it); continue; }
-		if (!character_models[*it].behavior_scheduled<cb::disappear>()) {
+		if (!character_models[*it].behavior_scheduled<cb::disappear>()) { // アニメーション中消さない
 			character_models.erase(*it);
-			it = graveyard.erase(it); continue;
+			it = graveyard.erase(it); 
+			continue;
 		}
 		++it;
 	}
-	pm.update(elapsed_time);
-	//event_log::imgui();
+
+	pm.update(elapsed_time); //パーティクルシステム
 }
 
 void dungeon_scene::register_character_model(int id, string filename, string alt_texture, character* character) {
 	float3 home;
 	if (character->has_flag(mindless)) {
 		if (character->has_flag(is_thrall)) {
+			// プレイヤーのモンスター
 			const int parent_id = static_cast<thrall*>(character)->get_parent()->get_id();
 			home = character_models[parent_id].get_home() + float3{0, 0, character_gap};
 
@@ -104,6 +105,7 @@ void dungeon_scene::register_character_model(int id, string filename, string alt
 			character_models[id].start_behavior<cb::summon>();
 		}
 		else {
+			// 敵
 			const int num_enemies = (int)enemy_models.size();
 			home = float3(character_gap * num_enemies, 0, enemy_spawn_z);
 
@@ -114,6 +116,7 @@ void dungeon_scene::register_character_model(int id, string filename, string alt
 		}
 	}
 	else {
+		// プレイヤー
 		const int num_characters = (int)character_models.size();
 		home = float3(character_gap * num_characters, 0, 0);
 		character_models.emplace(id, character_model(home, filename, alt_texture));

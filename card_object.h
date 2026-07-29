@@ -15,10 +15,14 @@ public:
 
 	void set_rest_pos(float2 pos) { true_pos = pos; }
 
+	// マウスオバー
 	void select() { selected = true; }
+	// マウスオバーではない
 	void unselect() { selected = false; }
 
+	//　選択可能
 	void activate() { active = true; tint = WHITE; }
+	// 選択不可能
 	void deactivate() { active = false; tint = { 0.5f, 0.5f, 0.5f }; }
 	bool is_active() { return active; }
 

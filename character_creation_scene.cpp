@@ -45,16 +45,19 @@ constexpr float button_scale = 0.5f;
 constexpr float confirm_scale = 1.0f;
 
 void character_creation_scene::init() {
+	//シーン設定
 	set_background({0.5f, 0.5f, 0.5f});
 	set_camera(&cam);
 	get_scene_lights().set_ambient_intensity(2);
 	get_scene_lights().set_ambient_color(WHITE);
 
+	//定義
 	const float padding			= BLIB::window::size().x / 16.0f;
 	const float half_padding	= padding * 0.5f;
 	const float quarter_padding = padding * 0.25f;
 	const float font_height		= BLIB::text::height();
 
+	//完了バターン
 	confirm.make_dummy(WHITE);
 	confirm.pos = { BLIB::window::size().x * 0.5f, padding * 2 };
 	confirm.set_collider(new BLIB::flat::aligned_rect_collider(nullptr, confirm.get_size() * 0.5f));
@@ -63,6 +66,7 @@ void character_creation_scene::init() {
 
 	float2 pos = BLIB::window::size() - float2{ padding + half_padding };
 
+	//名前入力
 	textbox.set_background(WHITE);
 	textbox.resize((float2(BLIB::text::width("IHaveAVeryLongName"), font_height) + float2(half_padding)) * textbox_scale);
 	textbox.set_collider(new BLIB::flat::aligned_rect_collider(nullptr, textbox.get_size() * 0.5f));
@@ -72,6 +76,7 @@ void character_creation_scene::init() {
 	pos.y -= (textbox.get_size().y + half_padding);
 	pos.x -= textbox.get_size().x * 0.5f;
 
+	//クラス選択バターン
 	float2 button_size = (float2( BLIB::text::width("LongClassName"), font_height ) + float2(quarter_padding)) * button_scale;
 	for (int i = 0; i < class_count; i++) {
 		auto& button = buttons.emplace_back();
@@ -84,6 +89,7 @@ void character_creation_scene::init() {
 		pos.y -= button.get_size().y + quarter_padding;
 	}
 
+	//モデルロード
 	for (int i = 0; i < class_count; i++) {
 		auto&	model		= class_models.emplace_back();
 		string	filename	= class_model_filenames[i];
@@ -92,6 +98,7 @@ void character_creation_scene::init() {
 		model.set_model(BLIB::load_fbx(filename, true, BLIB::LH_Y));
 		model.add_pos({ 0, -1, 0 });
 
+		//あればテキスチャー切り替え
 		if (alt_texture != "none") {
 			string texture = filename;
 			texture[0] = tolower(texture[0]);
@@ -105,16 +112,19 @@ void character_creation_scene::init() {
 			}
 		}
 
+		//アイドルアニメーション
 		add_animations_fbx(model.get_model(), "animations/Rig_Medium_General", 0);
 
 		model.get_model()->animate("Idle_A", 0, true);
 		model.set_qtn(quaternion::face_to({ 0, 0, 1 }, { 0, 0, -1 }));
 	}
 
+	//クラスの説明を用意
 	for (int i = 0; i < class_count; i++) {
 		string filename = string("data/desc/", i, ".txt");
 		std::ifstream ifs((const char*)filename);
 
+		//後フォーマット出来るため、言葉一個一個読み込む
 		char buffer[256];
 		while (ifs >> buffer) {
 			class_descs[i].push_back(string(buffer, " "));
@@ -124,53 +134,66 @@ void character_creation_scene::init() {
 }
 
 void character_creation_scene::update(float elapsed_time) {
+	//入力
 	auto* mouse = get_mouse_collider();
 	bool click = BLIB::input::trigger(key::LClick);
-
 	if (typing) { name = BLIB::input::get_typing_buffer(); }
 	
-	textbox.update(0);
+	//名前入力
+	textbox.update(0); //コライダーシンクする
 	if (BLIB::collision::check(mouse, &textbox)) {
 		if (click) { 
 			BLIB::audio::play("click");
 			typing = true; 
-			BLIB::input::get_typing_buffer() = name;
+			BLIB::input::get_typing_buffer() = name; // バッファークリア
 		}
 	}
-	else if (click) { typing = false; }
+	else if (click) { typing = false; }//外にクリックすると、名前入力を終了する
 
+	//クラス選択
 	for (int i = 0; i < class_count; i++) {
-		buttons[i].update(0);
-		if (BLIB::collision::check(mouse, &buttons[i])) {
+		buttons[i].update(0);//コライダーシンクする
+		if (BLIB::collision::check(mouse, &buttons[i])) { //マウスオーバー
 			if (click)					{ selected_class = (character_class)i; buttons[i].tint = { 0.8f, 1.0f, 0.8f }; BLIB::audio::play("click"); }
 			if (selected_class != i)	{ buttons[i].tint = { 0.8f, 0.8f, 0.8f }; }
 		} 
+		//マウスオーバーではない
 		else if (selected_class == i)	{ buttons[i].tint = { 0.8f, 1.0f, 0.8f }; } 
 		else							{ buttons[i].tint = WHITE; }
 	}
 
-	confirm.update(0);
-	if (name != "") {
+	//確定
+	confirm.update(0);//コライダーシンクする
+	if (name != "") { //名前がなければ確定不可能
+		//マウスオーバー
 		if (BLIB::collision::check(mouse, &confirm))	{ confirm.tint = { 0.6f, 0.8f, 0.6f }; if (click) { BLIB::manager::stage(main_scene_id, 0, BLIB::transition::fade, 0.5f); BLIB::audio::play("click"); } }
+		//マウスオーバーでない
 		else											{ confirm.tint = { 0.8f, 1.0f, 0.8f }; }
 	}
 	else {
 		confirm.tint = float3{ 0.8f };
 	}
 
+	//選択したクラスのモデルをアップデート
 	class_models[selected_class].update(elapsed_time);
 }
 
 void character_creation_scene::idle(float elapsed_time) {
+	//選択したクラスのモデルをアップデート
 	class_models[selected_class].update(elapsed_time);
 	confirm.tint = float3{ 0.8f };
 }
 
 void character_creation_scene::draw(BLIB::render_settings rs) const {
+	//３Dなものはクラスモデルのみ
+	//選択したクラスのモデルを描画
 	class_models[selected_class].render(rs);
 }
 
 void character_creation_scene::draw_transparent() const {
+	//2D UI描画
+
+	//定義
 	const float padding = BLIB::window::size().x / 16.0f;
 	const float half_padding = padding * 0.5f;
 	const float quarter_padding = padding * 0.25f;
@@ -178,6 +201,7 @@ void character_creation_scene::draw_transparent() const {
 	const float font_height = BLIB::text::height();
 
 	{
+		//名前入力
 		annotate("Name");
 		type("Your name:", textbox.pos + float2{ -textbox.get_size().x, half_padding }, float2{ textbox_scale }, FONT_DEFAULT, WHITE, C_TL);
 		textbox.clear();
@@ -187,6 +211,7 @@ void character_creation_scene::draw_transparent() const {
 	}
 
 	{
+		//クラス選択
 		annotate("Buttons");
 		for (int i = 0; i < class_count; i++) {
 			buttons[i].render();
@@ -196,18 +221,21 @@ void character_creation_scene::draw_transparent() const {
 	}
 
 	{
+		//クラス説明
 		annotate("Class Desc");
 		float2 pen{ padding, BLIB::window::size().y - padding * 2 };
 		float max_width = padding * 5;
 
+		//クラス名
 		pen.y -= type(class_names[selected_class], pen, float2{ classname_scale }, FONT_DEFAULT, WHITE, C_TL);
 		pen.y -= padding;
 
 		const std::vector<string>& desc = class_descs[selected_class];
 
+		//一個一個言葉を出力して、一列超えたら下へ
 		for (auto& word : desc) {
-			float w = BLIB::text::width(word) * classdesc_scale;
-			if (pen.x + w > max_width) {
+			float w = BLIB::text::width(word) * classdesc_scale; //長さ確認
+			if (pen.x + w > max_width) {//超えちゃう！
 				pen.x = padding;
 				pen.y -= font_height * classdesc_scale + quarter_padding;
 			}
@@ -215,7 +243,7 @@ void character_creation_scene::draw_transparent() const {
 			pen.x += w;
 		}
 	}
-
+	//確定
 	confirm.render();
 	type("Create", confirm.pos + float2(0, sixteenth_padding), float2(confirm_scale), FONT_DEFAULT, BLACK, C_CC);
 }
