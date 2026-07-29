@@ -117,7 +117,8 @@
       <AdditionalDependencies>BLIB.lib;d3d11.lib;dxgi.lib;DirectXTK.lib;DirectXTKAudioWin8.lib;libfbxsdk-md.lib;libxml2-md.lib;Advapi32.lib;zlib-md.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>"$(ProjectDir)BLIB_update.exe"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
