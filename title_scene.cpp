@@ -133,7 +133,7 @@ void title_scene::update(float elapsed_time) {
 	if (BLIB::collision::check(mouse, &tutorial_button)) {
 		if (click) {
 			// シーン移動
-			BLIB::manager::add_and_stage(new tutorial_scene, 0, BLIB::transition::fade, 0.5f);
+			tt_id = BLIB::manager::add_and_stage(new tutorial_scene, 0, BLIB::transition::fade, 0.5f);
 			BLIB::audio::play("click");
 		}
 		else tutorial_button.tint = color(0.5f, 1.0f, 0.5f); //　マウスオバー
@@ -147,7 +147,11 @@ void title_scene::idle(float elapsed_time) {
 }
 
 void title_scene::on_wake() { 
-	if (cc_id) { // キャラ作りから戻ったので、キャラを作成
+	if (tt_id) { //　チュートリアルから戻ったので、チュートリアルを消します。
+		static_cast<tutorial_scene*>(BLIB::manager::get_scene(tt_id))->stop();
+		tt_id = 0;
+	}
+	else if (cc_id) { // キャラ作りから戻ったので、キャラを作成
 		party_data.push_back(static_cast<character_creation_scene*>(BLIB::manager::get_scene(cc_id))->get_character_data());
 	}
 	if (bgm_id == BLIB::audio::unset) { // 音楽なければ出して

@@ -7,7 +7,8 @@ class title_scene : public BLIB::flat::scene {
 private:
 	int bgm_id = BLIB::audio::unset;
 
-	BLIB::task_id cc_id = 0;
+	BLIB::task_id cc_id = 0; // character creation scene
+	BLIB::task_id tt_id = 0; // tutorial scene
 
 	BLIB::flat::object bkg;
 	BLIB::flat::object start_button;

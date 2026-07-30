@@ -20,4 +20,6 @@ private:
 public:
 	tutorial_scene() {}
 	~tutorial_scene() {}
+
+	void stop() { finish(); }
 };
