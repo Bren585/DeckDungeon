@@ -249,7 +249,7 @@ void combat::update(float elapsed_time) {
 
 				//　このアクション、ラックにバッフされていい？
 				if ((attacker_action.flags & cannot_be_buffed) == 0) {
-					int luck_bonus = attacker->get_buffs().luck * is_debuff ? -1 : 1;
+					int luck_bonus = attacker->get_buffs().luck * (is_debuff ? -1 : 1);
 					for (int i = 0; i < 4; i++) { if (buff[i] != 0) buff[i] += luck_bonus; }
 				}
 
@@ -267,6 +267,10 @@ void combat::update(float elapsed_time) {
 
 				//　パーティクル生み出す
 				for (auto target : targets) {
+					if (buff.health) {
+						get_scene()->get_pm().add(new number_particle(abs(buff.health), buff.health < 0 ? RED : GREEN), get_scene()->get_character_model(target->get_id()).get_pos() + damage_spawn_offset);
+					}
+
 					if (attacker_action.flags & magic_attack) {
 						get_scene()->get_pm().add(
 							new magic_attack_particles(),
@@ -351,7 +355,12 @@ void combat::update(float elapsed_time) {
 		/* 攻撃結果 */ {
 			// 攻撃力
 			int attack = attacker->get_buffed_stats().attack;
-			if (attacker_action.flags & heal_bonus) attacker->heal(attacker_action.cost.modifier() + attacker->get_buffs().luck);
+			
+			if (attacker_action.flags & heal_bonus) {
+				int heal_amount = attacker_action.cost.modifier() + attacker->get_buffs().luck;
+				attacker->heal(heal_amount);
+				get_scene()->get_pm().add(new number_particle(abs(heal_amount), heal_amount < 0 ? RED : GREEN), get_scene()->get_character_model(attacker->get_id()).get_pos() + damage_spawn_offset);
+			}
 			if (attacker_action.flags & attack_bonus) attack += attacker_action.cost.modifier() + attacker->get_buffs().luck;
 
 			if (attacker->dead()) { // 自殺しちゃった
@@ -365,7 +374,12 @@ void combat::update(float elapsed_time) {
 
 			//　防衛力
 			int defense = targets[0]->get_buffed_stats().defense;
-			if (defender_action.flags & heal_bonus) targets[0]->heal(defender_action.cost.modifier() + targets[0]->get_buffs().luck);
+			int effective_damage = 0;
+			if (defender_action.flags & heal_bonus) { 
+				int heal_amount = defender_action.cost.modifier() + targets[0]->get_buffs().luck;
+				targets[0]->heal(heal_amount); 
+				effective_damage -= heal_amount;
+			}
 			if (defender_action.flags & defense_bonus) { 
 				defense += defender_action.cost.modifier() + targets[0]->get_buffs().luck; 
 				get_scene()->get_character_model(targets[0]->get_id()).start_behavior<cb::block>();
@@ -377,6 +391,8 @@ void combat::update(float elapsed_time) {
 			event_log::record(string("Dealt ", TEXT_COLOR(RED), damage, TEXT_COLOR(WHITE), " damage in combat"));
 			targets[0]->damage(damage);
 			targets[0]->end_turn();
+			effective_damage += damage;
+			particle_buffer = new number_particle(abs(effective_damage), effective_damage < 0 ? GREEN : RED);
 		}
 
 		// パーティクル生み出す
@@ -390,6 +406,10 @@ void combat::update(float elapsed_time) {
 		WAIT(0.25f);
 		//アニメーション終わりまで待つ
 		YIELD_WHILE(!get_scene()->get_character_model(attacker->get_id()).behavior_is<cb::idle>());
+		if (particle_buffer) {
+			get_scene()->get_pm().add(particle_buffer, get_scene()->get_character_model(targets[0]->get_id()).get_pos() + damage_spawn_offset);
+			particle_buffer = nullptr;
+		}
 		get_scene()->get_character_model(targets[0]->get_id()).start_behavior<cb::idle>();
 	}
 

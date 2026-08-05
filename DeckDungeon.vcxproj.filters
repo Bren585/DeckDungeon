@@ -323,6 +323,9 @@
     <ClInclude Include="tutorial_scene.h">
       <Filter>Header Files\scenes</Filter>
     </ClInclude>
+    <ClInclude Include="number_particle.h">
+      <Filter>Header Files\ui\particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="KitAnimations.txt">

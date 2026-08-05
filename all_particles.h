@@ -8,3 +8,4 @@
 #include "summon_particle.h"
 #include "impact_particle.h"
 #include "magic_attack_particle.h"
+#include "number_particle.h"

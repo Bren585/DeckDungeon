@@ -194,6 +194,7 @@
     <ClInclude Include="cleanup_hand.h" />
     <ClInclude Include="combat.h" />
     <ClInclude Include="coroutines.h" />
+    <ClInclude Include="number_particle.h" />
     <ClInclude Include="debuff_particle.h" />
     <ClInclude Include="log.h" />
     <ClInclude Include="dungeon_master.h" />

@@ -22,6 +22,7 @@ protected:
 };
 
 #define card_spawn_offset float3{0, 2.5f, 0}
+#define damage_spawn_offset float3{0, 1.5f, 0}
 class DM_animator {
 protected:
 	const BLIB::task_id scene_id = 0;

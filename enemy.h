@@ -32,4 +32,10 @@ public:
 
 		};
 	}
+
+	enemy(string name, stats stats) : character(name, stats, character_flags::mindless) {
+		skills = {
+
+		};
+	}
 };

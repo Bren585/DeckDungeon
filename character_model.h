@@ -26,7 +26,7 @@ private:
 
 public:
 	character_model() { assert(false); } // to be nice to std::set only, never to be used
-	character_model(float3 home, string filename, string alt_texture = "none", bool faces_forward = true);
+	character_model(string filename, string alt_texture = "none", bool faces_forward = true);
 	character_model(character_model&& o) noexcept : BLIB::full::object(o) {
 		home = o.home;
 		faces_forward = o.faces_forward;
@@ -57,9 +57,11 @@ public:
 
 	int get_queue_size() const { return (int)state_queue.size(); }
 
-	float3 get_home() { return home; }
+	void	set_home(float3 new_home)	{ home = new_home; }
+	float3	get_home()					{ return home; }
+
 	quaternion get_forward() { if (faces_forward) return quaternion::identity(); else return quaternion::face_to({ 0, 0, 1 }, { 0, 0, -1 }); }
 	
-	float2 get_screen_pos(BLIB::camera* c);
+	float2 get_screen_pos(const BLIB::camera* c) const;
 
 };

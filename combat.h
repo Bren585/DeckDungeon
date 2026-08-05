@@ -20,6 +20,7 @@ private:
 	std::vector<character*> targets;
 	pile attacker_discard;
 	pile target_discard;
+	class BLIB::particles* particle_buffer = nullptr;
 
 	action attacker_action;
 	action defender_action;

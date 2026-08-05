@@ -2,7 +2,7 @@
 #include "all_behaviors.h"
 #include "BLIB\skinned_mesh.h"
 
-character_model::character_model(float3 home, string filename, string alt_texture, bool faces_forward) : home(home), faces_forward(faces_forward) {
+character_model::character_model(string filename, string alt_texture, bool faces_forward) : home(float3(0)), faces_forward(faces_forward) {
 	set_model(BLIB::load_fbx(filename, true, BLIB::LH_Y));
 
 	add_animations_fbx(get_model(), "animations/Rig_Medium_General",		0);
@@ -51,7 +51,7 @@ void character_model::update(float elapsed_time) {
 	}
 }
 
-float2 character_model::get_screen_pos(BLIB::camera* cam) {
+float2 character_model::get_screen_pos(const BLIB::camera* cam) const {
 	matrix VP = cam->get_view_projection();
 	float4 clip = mul(float4{ get_pos(), 1 }, VP);
 	float2 ndc = clip.xy() / clip.w;

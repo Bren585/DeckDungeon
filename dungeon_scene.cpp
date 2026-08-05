@@ -92,37 +92,86 @@ void dungeon_scene::idle(float elapsed_time) {
 }
 
 void dungeon_scene::register_character_model(int id, string filename, string alt_texture, character* character) {
+	if (character->has_flag(mindless) && !character->has_flag(is_thrall)) {
+		register_character_model(id, std::move(character_model(filename, alt_texture, false)), character);
+	}
+	else {
+		register_character_model(id, std::move(character_model(filename, alt_texture)), character);
+	}
+
+	//float3 home;
+	//if (character->has_flag(mindless)) {
+	//	if (character->has_flag(is_thrall)) {
+	//		// プレイヤーのモンスター
+	//		const int parent_id = static_cast<thrall*>(character)->get_parent()->get_id();
+	//		home = character_models[parent_id].get_home() + float3{0, 0, character_gap};
+
+	//		character_models.emplace(id, character_model(filename, alt_texture));
+	//		character_models[id].set_home(home);
+	//		character_models[id].set_pos(home);
+	//		character_models[id].start_behavior<cb::summon>();
+	//	}
+	//	else {
+	//		// 敵
+	//		const int num_enemies = (int)enemy_models.size();
+	//		home = float3(character_gap * num_enemies, 0, enemy_spawn_z);
+
+	//		enemy_models.emplace(id, character_model(filename, alt_texture, false));
+	//		enemy_models[id].set_home(home);
+	//		enemy_models[id].set_pos(home);
+	//		enemy_models[id].set_qtn(enemy_models[id].get_forward());
+	//		enemy_models[id].start_behavior<cb::summon>();
+	//	}
+	//}
+	//else {
+	//	// プレイヤー
+	//	const int num_characters = (int)character_models.size();
+	//	home = float3(character_gap * num_characters, 0, 0);
+	//	character_models.emplace(id, character_model(filename, alt_texture));
+	//	character_models[id].set_home(home);
+	//	character_models[id].set_pos(float3{ home.x, 0, spawn_z });
+	//	character_models[id].start_behavior<cb::go_home>(1.0f);
+	//}
+}
+
+void dungeon_scene::register_character_model(int id, character_model&& model, character* character) {
 	float3 home;
 	if (character->has_flag(mindless)) {
 		if (character->has_flag(is_thrall)) {
 			// プレイヤーのモンスター
 			const int parent_id = static_cast<thrall*>(character)->get_parent()->get_id();
-			home = character_models[parent_id].get_home() + float3{0, 0, character_gap};
+			home = character_models[parent_id].get_home() + float3{ 0, 0, character_gap };
 
-			character_models.emplace(id, character_model(home, filename, alt_texture));
+			character_models.emplace(id, std::move(model));
+			character_models[id].set_home(home);
 			character_models[id].set_pos(home);
-			character_models[id].set_qtn(character_models[id].get_forward());
 			character_models[id].start_behavior<cb::summon>();
+			character_models[id].update(0.001f);
 		}
 		else {
 			// 敵
 			const int num_enemies = (int)enemy_models.size();
 			home = float3(character_gap * num_enemies, 0, enemy_spawn_z);
 
-			enemy_models.emplace(id, character_model(home, filename, alt_texture, false));
+			enemy_models.emplace(id, std::move(model));
+			enemy_models[id].set_home(home);
 			enemy_models[id].set_pos(home);
 			enemy_models[id].set_qtn(enemy_models[id].get_forward());
 			enemy_models[id].start_behavior<cb::summon>();
+			enemy_models[id].update(0.001f);
 		}
 	}
 	else {
 		// プレイヤー
 		const int num_characters = (int)character_models.size();
 		home = float3(character_gap * num_characters, 0, 0);
-		character_models.emplace(id, character_model(home, filename, alt_texture));
+		character_models.emplace(id, std::move(model));
+		character_models[id].set_home(home);
 		character_models[id].set_pos(float3{ home.x, 0, spawn_z });
 		character_models[id].start_behavior<cb::go_home>(1.0f);
+		character_models[id].update(0.001f);
 	}
+	
 }
 
 void dungeon_scene::spotlight(int id, color c) {
@@ -134,3 +183,25 @@ void dungeon_scene::spotlight(int id, color c) {
 }
 
 void dungeon_scene::clear_spotlight() { get_lights()[0].disable(); }
+
+void dungeon_scene::draw_transparent() const {
+	// パーティクル
+	pm.render({});
+
+	// キャラ名
+	{
+		const auto* dm = GET_DM(BLIB::manager::find_first_of_type<dungeon_master>());
+		if (dm) {
+			for (const auto p : dm->peek_players()) {
+				float2 pos = get_character_model(p->get_id()).get_screen_pos(get_camera()) + float2{ -5, 90 };
+				type(p->get_name(), pos - float2{ 1, 1}, float2{0.5f}, FONT_DEFAULT, BLACK, C_CC);
+				type(p->get_name(), pos, float2{ 0.5f }, FONT_DEFAULT, WHITE, C_CC);
+			}
+			for (const auto e : dm->peek_enemies()) {
+				float2 pos = get_character_model(e->get_id()).get_screen_pos(get_camera()) + float2{ -5, 90 };
+				type(e->get_name(), pos - float2{ 1, 1 }, float2{ 0.5f }, FONT_DEFAULT, BLACK, C_CC);
+				type(e->get_name(), pos, float2{ 0.5f }, FONT_DEFAULT, WHITE, C_CC);
+			}
+		}
+	}
+}

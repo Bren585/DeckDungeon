@@ -17,9 +17,13 @@ string revive_players::title() {
 	switch (sacrifice_state) {
 	case sacrifice_select:		
 		return string(shaman->get_name(), ", sacrifice 5 ATK to revive a player");
-	case sacrifice_complete:	
+	case sacrifice_complete:
+	{
 		auto* p = dead_players[revive_index];
 		return string(p->get_name(), " will have ", p->get_health(), " HP");
+	}
+	default:
+		return "";
 	}
 }
 
@@ -67,6 +71,8 @@ std::vector<prompt> revive_players::get_prompts() {
 			{"Sacrifice 1 ATK to heal 6 HP", 1},
 			{"Stop healing", 0}
 		};
+	default:
+		return { {"error", -1} };
 	}
 	
 }

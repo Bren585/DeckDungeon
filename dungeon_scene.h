@@ -35,7 +35,7 @@ private:
 
 	// Required, but {} is acceptable
 	void idle(float elapsed_time) override;
-	void draw_transparent() const override { pm.render({}); }
+	void draw_transparent() const override;
 
 	// Optional
 	void kill() override;
@@ -48,9 +48,16 @@ public:
 
 	//キャラを登録
 	void register_character_model(int id, string filename, string alt_texture, character* character);
+	void register_character_model(int id, character_model&& model, character* character);
+
 	character_model& get_character_model(int id) { 
 		if (character_models.find(id) != character_models.end()) return character_models[id];
 		else return enemy_models[id];
+	}
+
+	const character_model& get_character_model(int id) const {
+		if (character_models.find(id) != character_models.end()) return character_models.at(id);
+		else return enemy_models.at(id);
 	}
 
 	//　パーティクルシステムを会得

@@ -5,7 +5,7 @@
 class swordsman : public character {
 	action basic_attack(card card) override {
 		switch (card.suit()) {
-		case spade:		return ACTION(target_enemy | is_combat | attack_bonus | is_damage, (0, 0, (int)std::ceilf(-get_stats().attack / 3.0f), 0), "double attacks");
+		case spade:		return ACTION(target_enemy | is_combat | attack_bonus | is_damage, (0, 0, 0, (int)std::ceilf(-get_stats().attack / 3.0f)), "double attacks");
 		case club:		return DEFAULT_ATTACK;
 		case diamond:	return DEFAULT_LUCK;
 		case heart:		return DEFAULT_HEAL;
