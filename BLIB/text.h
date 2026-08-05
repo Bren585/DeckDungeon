@@ -48,6 +48,7 @@ namespace BLIB {
 
 			metadata meta{};
 			string buffer;
+			color format_color = WHITE;
 
 			// Inherited from sprite_batch. Convert the string buffer to individual sprite::vertices.
 			void render_all(float2 pos, float2 scale, float2 pivot, float rotation) override;

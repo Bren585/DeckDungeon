@@ -26,6 +26,7 @@ namespace BLIB {
 			float	rotation;
 			float2	tile_index; // or uv_position
 			float2	tile_size;	// or uv_size, used by variable_flat only
+			color   tint;		// variable_flat only
 		};
 
 		struct constants {

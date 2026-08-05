@@ -203,5 +203,6 @@ void title_scene::draw(BLIB::render_settings rs) const {
 	type("Tutorial", tutorial_button.pos + C_TR * quarter_padding, float2(start_scale), FONT_DEFAULT, BLACK, C_BL);
 
 	//get_mouse_collider()->peek_collider()->render_debug(rs);
+
 }
 

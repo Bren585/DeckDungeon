@@ -48,7 +48,7 @@ namespace BLIB {
 				- Or, how much data to read from the texture file.
 				- Optional. Defaults to {0, 0}.
 		*/
-		void prerender(float2 pos, float2 scale, float2 pivot, float rotation, float2 tile_index, float2 tile_size = float2{0});
+		void prerender(float2 pos, float2 scale, float2 pivot, float rotation, float2 tile_index, float2 tile_size = float2{0}, color tint = WHITE);
 
 	public:
 		sprite_batch(const string& filename, size_t max_sprites, flags flags = batch_flags);

@@ -93,6 +93,7 @@ void dungeon_master::update(float elapsed_time) {
 	BLIB::manager::stage(scene_id, 1, BLIB::transition::fade, 1.0f);
 
 	// 次のフロア
+	floor_number++;
 	GO_TO_CHECKPOINT(dungeon_start);
 
 	SET_CHECKPOINT(dungeon_dead); // ゲームオーバー

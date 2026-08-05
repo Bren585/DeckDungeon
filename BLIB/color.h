@@ -6,7 +6,8 @@
 													color
 ************************************************************************************************************************/
 
-typedef unsigned long hex_rgba;
+#define TEXT_COLOR_TAG '\x1f'
+typedef unsigned int hex_rgba;
 
 class color {
 public:
@@ -24,7 +25,11 @@ public:
 
 	inline color operator*(color that) const { return { r * that.r,	g * that.g,	b * that.b, a * that.a }; }
 
+	inline			float& operator[](int i)		{ switch (i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: throw std::out_of_range("Invalid Index"); } }
+	inline const	float& operator[](int i) const	{ switch (i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: throw std::out_of_range("Invalid Index"); } }
+
 	inline operator DirectX::XMFLOAT4() const { return { r, g, b, a }; }
+
 	inline operator hex_rgba() const { return 
 		((int(r * 255) & 0xff) << 24) |
 		((int(g * 255) & 0xff) << 16) |
@@ -40,6 +45,10 @@ public:
 	SERIALIZE(r, g, b, a)
 };
 
+// Value To Char : converts a value from a color (i.e., r, g, b, or a) into a char. 
+inline char		value_to_char(float v) { return static_cast<			char>(v  * 255 + 0.5f)	; }
+inline float	char_to_value(char	c) { return static_cast<unsigned	char>(c) / 255.0f		; }
+
 #define WHITE		color {1, 1, 1}
 #define RED			color {1, 0, 0}
 #define GREEN		color {0, 1, 0}
@@ -49,3 +58,5 @@ public:
 #define PINK		color {1, 0, 1}
 #define BLACK		color {0, 0, 0}
 #define COLORLESS	color {0, 0, 0, 0}
+
+#define TEXT_COLOR(c) string(TEXT_COLOR_TAG, value_to_char(c.r), value_to_char(c.g), value_to_char(c.b), value_to_char(c.a))

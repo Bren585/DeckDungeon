@@ -5,15 +5,17 @@
 #include "dungeon_scene.h"
 
 character* create_character_from_data(character_data data) {
+	string name = string(TEXT_COLOR(BLUE), data.name, TEXT_COLOR(WHITE)); // プレイヤー名が青く表示するため
+
 	switch (data.type) {
-	case class_armorer:		return new armorer(data.name);
-	case class_gambler:		return new gambler(data.name);
-	case class_mage:		return new mage(data.name);
-	case class_monk:		return new monk(data.name);
-	case class_priest:		return new priest(data.name);
-	case class_shaman:		return new shaman(data.name);
-	case class_summoner:	return new summoner(data.name);
-	default:				return new swordsman(data.name);
+	case class_armorer:		return new armorer	(name);
+	case class_gambler:		return new gambler	(name);
+	case class_mage:		return new mage		(name);
+	case class_monk:		return new monk		(name);
+	case class_priest:		return new priest	(name);
+	case class_shaman:		return new shaman	(name);
+	case class_summoner:	return new summoner	(name);
+	default:				return new swordsman(name);
 	}
 }
 

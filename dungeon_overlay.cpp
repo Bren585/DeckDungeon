@@ -239,11 +239,37 @@ void dungeon_overlay::render_info() const {
 				stats s = info->get_stats();
 				stats b = info->get_buffs();
 
+				float percent = (float)health / (float)s.health;
+				color percent_color;
+				if (percent > 0.5f) {
+					percent_color = lerp(YELLOW, GREEN, (percent - 0.5f) * 2);
+				}
+				else {
+					percent_color = lerp(RED, YELLOW, percent * 2);
+				}
+
 				//èoóÕ
-				pen.y -= info_canvas.type(string("HP : ",	health, "/", s.health														), pen, float2{ 0.4f }, "Arial", WHITE, C_TL) + half_padding;
-				pen.y -= info_canvas.type(string("ATK : ",	s.attack,	(b.attack	? string("(", b.attack	+ b.luck, ")") : string())	), pen, float2{ 0.4f }, "Arial", WHITE, C_TL) + half_padding;
-				pen.y -= info_canvas.type(string("DEF : ",	s.defense,	(b.defense	? string("(", b.defense + b.luck, ")") : string())	), pen, float2{ 0.4f }, "Arial", WHITE, C_TL) + half_padding;
-				pen.y -= info_canvas.type(string("LCK : ",	s.luck																		), pen, float2{ 0.4f }, "Arial", WHITE, C_TL) + half_padding;
+				string message;
+
+				message = string("HP : ", TEXT_COLOR(percent_color), health, "/", s.health, TEXT_COLOR(WHITE));
+				pen.y -= info_canvas.type(message, pen, float2{ 0.4f }, "Arial", WHITE, C_TL) + half_padding;
+
+				message = string("ATK : ", s.attack);
+				if (b.attack) { 
+					color tint = (b.attack < 0) ? RED : BLUE;
+					message += string(TEXT_COLOR(tint), " (", b.attack + b.luck, ")", TEXT_COLOR(WHITE));
+				}
+				pen.y -= info_canvas.type(message, pen, float2{ 0.4f }, "Arial", WHITE, C_TL) + half_padding;
+
+				message = string("DEF : ", s.defense);
+				if (b.defense) {
+					color tint = (b.attack < 0) ? RED : BLUE;
+					message += string(TEXT_COLOR(tint), " (", b.defense + b.luck, ")", TEXT_COLOR(WHITE));
+				}
+				pen.y -= info_canvas.type(message, pen, float2{ 0.4f }, "Arial", WHITE, C_TL) + half_padding;
+
+				message = string("LCK : ", s.luck);
+				pen.y -= info_canvas.type(message, pen, float2{ 0.4f }, "Arial", WHITE, C_TL) + half_padding;
 			}
 
 			/* cards */ {

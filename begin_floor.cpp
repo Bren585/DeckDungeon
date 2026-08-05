@@ -158,6 +158,7 @@ void begin_floor::update(float elapsed_time) {
 			if (enemy_count == boss) { enemy_name = boss_names[buff_card.face() - 1]; model_name = "Skeleton_Warrior"; }
 			//@•’Ê“G–¼‘O
 			else { enemy_name = names[buff_card.face() - 1]; }
+			enemy_name = TEXT_COLOR(RED) + enemy_name + TEXT_COLOR(WHITE); // “G–¼‚ªÔ‚­•\¦‚·‚é‚½‚ß
 			string message("A ", enemy_name, " spawned!");
 			event_log::record(message);
 

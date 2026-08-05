@@ -374,7 +374,7 @@ void combat::update(float elapsed_time) {
 			// Œ‹‰Ê
 			int damage = attack - defense;
 			if (damage < 0) damage = 0;
-			event_log::record(string("Dealt ", damage, " damage in combat"));
+			event_log::record(string("Dealt ", TEXT_COLOR(RED), damage, TEXT_COLOR(WHITE), " damage in combat"));
 			targets[0]->damage(damage);
 			targets[0]->end_turn();
 		}
