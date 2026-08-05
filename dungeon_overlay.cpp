@@ -116,11 +116,15 @@ void dungeon_overlay::init() {
 	info_canvas.clear();
 
 	//ログUIを用意
+	float2 LOG_C = float2 LOG_I_WH * 0.5f;
+	log_canvas.set_collider(new BLIB::flat::rect_collider(nullptr, LOG_C, 0));
+	log_canvas.get_collider()->add_off(LOG_C);
 	log_canvas.resize(LOG_I_WH);
 	log_canvas.set_background(FILL);
 	log_canvas.pos = LOG_I_BL;
 	log_canvas.pivot = C_BL;
 	log_canvas.clear();
+	log_canvas.update(0); // コライダーをシンク
 
 	//選択UIを用意
 	choice_canvas.resize(CHC_I_WH);
@@ -149,12 +153,14 @@ void dungeon_overlay::update(float elapsed_time) {
 		overlay.set_size(BLIB::window::size());
 	}
 
+	auto* mouse = get_mouse_collider()->peek_collider();
+
 	auto* dm = get_dm();
 	if (dm) {
 		temp_on_deck = no_show; //情報ボックスをクリア
 		BLIB::flat::aligned_rect_collider temp(nullptr, float2(50)); //マウスと当たり判定するため用意
 		auto* ds = static_cast<dungeon_scene*>(BLIB::manager::get_scene(BLIB::manager::find_first_of_type<dungeon_scene>()));
-		auto* mouse = get_mouse_collider()->peek_collider();
+		
 
 		//プレイヤーをマウスオバーすると、情報をオンデック
 		for (auto p : dm->peek_players()) {
@@ -175,6 +181,11 @@ void dungeon_overlay::update(float elapsed_time) {
 		}
 	}
 
+	if (BLIB::collision::check(mouse, log_canvas.peek_collider(), true)) {
+		int scroll = static_cast<int>(BLIB::input::get_mouse_scroll() * 0.01f);
+		if (scroll != 0) log_start_index = clamp(0, log_start_index + scroll, event_log::get().size());
+	}
+
 	//選択アップデート
 	update_choice(elapsed_time);
 
@@ -189,20 +200,26 @@ void dungeon_overlay::render_log() const {
 	RENDER_LOCK;
 	annotate("log");
 	const std::vector<string>& messages = event_log::get();
-	if (last_log_count != messages.size()) { //	ログ増えてなければ新たに書く必要ない
+	if (last_log_count != messages.size() || last_log_start_index != log_start_index) { //	ログ増えてなければ、もしくは動いてなければ新たに書く必要ない
+		if (last_log_count != messages.size()) { log_start_index = 0; }
 		last_log_count = messages.size();
+		last_log_start_index = log_start_index;
 		log_canvas.clear();
 		//定義
 		const float2 font_size = { 8, 16 };
 		const float buffer = 5;
 		float x = buffer;
 		float y = log_canvas.get_size().y - buffer;
-		float4 white = {1, 1, 1, 1};
-		float4 fade = float4{ FILL, 1 };
+		float4 white = { 1, 1, 1, 1 };
+		float4 fade = { 1, 1, 1, 0 };
+		int skip = log_start_index;
 		//新しいログを上にし、古ければ古いほど色を薄くする
 		for (auto rit = messages.rbegin(); (rit != messages.rend()) && (y > 0); rit++) {
+			if (skip > 0) { skip--; continue; } //　スタートインデックスまで飛ばします
 			y -= log_canvas.type(*rit, { x, y }, { 0.5f, 0.5f }, "Arial", lerp(fade, white, y / LOG_I_H), C_TL) + buffer;
 		}
+
+		log_canvas.type(log_start_index, float2(0), float2(2));
 	}
 }
 
@@ -401,6 +418,7 @@ void dungeon_overlay::draw(BLIB::render_settings rs) const {
 	//　ログ
 	render_log();
 	log_canvas.render(rs);
+	//log_canvas.peek_collider()->render_debug(rs);
 
 	//　情報
 	render_info();

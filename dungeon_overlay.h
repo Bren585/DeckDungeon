@@ -9,7 +9,9 @@ private:
 	BLIB::canvas overlay;
 
 	BLIB::canvas log_canvas;
-	mutable size_t last_log_count = 0;
+	mutable size_t	last_log_count = 0;
+	mutable int		last_log_start_index = 0;
+	mutable int		log_start_index = 0;
 
 	BLIB::canvas info_canvas;
 	mutable std::vector<card_object> card_sprites;
