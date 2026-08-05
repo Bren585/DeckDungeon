@@ -160,7 +160,6 @@
     <ClCompile Include="end_floor.cpp" />
     <ClCompile Include="level_up.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="model_test.cpp" />
     <ClCompile Include="mouse_collider.cpp" />
     <ClCompile Include="revive_players.cpp" />
     <ClCompile Include="start_dungeon_scene.cpp" />
@@ -211,7 +210,6 @@
     <ClInclude Include="mage.h" />
     <ClInclude Include="magic_attack_particle.h" />
     <ClInclude Include="magic_trail_particle.h" />
-    <ClInclude Include="model_test.h" />
     <ClInclude Include="monk.h" />
     <ClInclude Include="mouse_collider.h" />
     <ClInclude Include="particle_manager.h" />

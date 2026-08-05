@@ -9,7 +9,6 @@ using namespace BLIB;
 
 #include "BLIB/load_scene.h"
 #include "all_scenes.h" 
-#include "model_test.h"
 
 int WINAPI WinMain(_In_ HINSTANCE instance, _In_opt_  HINSTANCE prev_instance, _In_ LPSTR cmd_line, _In_ int cmd_show)
 {
