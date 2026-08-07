@@ -8,6 +8,7 @@
 #include "begin_floor.h"
 #include "combat.h"
 #include "end_floor.h"
+#include "boss_floor_flag.h"
 
 std::vector<character*>& DM_priviledges::get_players() { return GET_DM(dm_id)->players; }
 std::vector<character*>& DM_priviledges::get_enemies() { return GET_DM(dm_id)->enemies; }
@@ -132,4 +133,20 @@ void dungeon_master::update(float elapsed_time) {
 void dungeon_master::kill() { 
 	for (auto& player : players) { delete player; } 
 	for (auto& enemy : enemies) { delete enemy; } 
+}
+
+void dungeon_master::on_stop() {
+	BLIB::task_id task = BLIB::manager::find_first_of_type<begin_floor>();
+	if (task) { BLIB::manager::get_task(task)->stop(); }
+
+	task = BLIB::manager::find_first_of_type<combat>(); 
+	if (task) { BLIB::manager::get_task(task)->stop(); }
+
+	task = BLIB::manager::find_first_of_type<end_floor>();
+	if (task) { BLIB::manager::get_task(task)->stop(); }
+
+	task = BLIB::manager::find_first_of_type<boss_floor_flag>();
+	if (task) { BLIB::manager::get_task(task)->stop(); }
+
+	GO_TO_CHECKPOINT(dungeon_end);
 }

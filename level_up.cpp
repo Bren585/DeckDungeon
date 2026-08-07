@@ -4,6 +4,7 @@
 level_up::level_up(character* p) : player(p) { levels = p->redeem_exp(); }
 
 void	level_up::on_wake	() { get_overlay()->start_listening(this);	}
+void	level_up::on_stop	() { get_overlay()->stop_listening(); }
 string	level_up::title		() { return string(player->get_name(), " you have ", levels, " level", (levels == 1 ? "": "s"), "!"); }
 
 void level_up::on_hear(int choice) {

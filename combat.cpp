@@ -514,3 +514,16 @@ void combat::update(float elapsed_time) {
 	finish();
 	END_COROUTINE;
 }
+
+void combat::on_stop() {
+	BLIB::task_id task = BLIB::manager::find_first_of_type<choose_action>();
+	if (task) BLIB::manager::get_task(task)->stop();
+
+	task = BLIB::manager::find_first_of_type<choose_skill>();
+	if (task) BLIB::manager::get_task(task)->stop();
+
+	task = BLIB::manager::find_first_of_type<choose_target>();
+	if (task) BLIB::manager::get_task(task)->stop();
+
+	finish();
+}

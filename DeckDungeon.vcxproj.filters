@@ -200,9 +200,6 @@
     <ClInclude Include="choose_skill.h">
       <Filter>Header Files\tasks\combat</Filter>
     </ClInclude>
-    <ClInclude Include="boss_floor_flag.h">
-      <Filter>Header Files\tasks\begin_floor</Filter>
-    </ClInclude>
     <ClInclude Include="end_floor.h">
       <Filter>Header Files\tasks\end_floor</Filter>
     </ClInclude>
@@ -319,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="number_particle.h">
       <Filter>Header Files\ui\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="boss_floor_flag.h">
+      <Filter>Header Files\tasks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

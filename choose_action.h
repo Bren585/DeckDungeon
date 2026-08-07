@@ -41,6 +41,7 @@ private:
 	void kill() override {}
 	void on_wake() override;
 	void on_sleep() override {}
+	void on_stop() override;
 
 public:
 	choose_action(combat* ptr, int id/*const pile* hand*/, action_type type) : parent(ptr), id(id)/*hand(hand)*/, type(type) {}

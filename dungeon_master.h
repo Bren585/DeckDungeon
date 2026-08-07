@@ -50,11 +50,13 @@ private:
 
 	// Required, but {} is acceptable
 	void idle(float elapsed_time) override {}
+	void try_stop() override { update(0); }
 
 	// Optional
 	void kill() override;
 	void on_wake() override {}
 	void on_sleep() override {}
+	void on_stop() override;
 
 public:
 	dungeon_master(std::vector<character*> players) : players(players) {}
@@ -62,4 +64,5 @@ public:
 
 	const std::vector<character*>& peek_players() const { return players; }
 	const std::vector<character*>& peek_enemies() const { return enemies; }
+
 };

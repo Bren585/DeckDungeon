@@ -235,3 +235,16 @@ void begin_floor::update(float elapsed_time) {
 
 	END_COROUTINE;
 }
+
+void begin_floor::on_stop() {
+	BLIB::task_id task = BLIB::manager::find_first_of_type<assign_floor_buff>();
+	if (task) BLIB::manager::get_task(task)->stop();
+
+	task = BLIB::manager::find_first_of_type<cleanup_hand>();
+	if (task) BLIB::manager::get_task(task)->stop();
+
+	task = BLIB::manager::find_first_of_type<load_enemy>();
+	if (task) BLIB::manager::get_task(task)->stop();
+
+	finish();
+}

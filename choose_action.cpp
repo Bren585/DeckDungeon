@@ -52,6 +52,7 @@ void choose_action::init() { hand = &GET_DM(BLIB::manager::find_first_of_type<du
 #else
 void		choose_action::update		(float elapsed_time	) {}
 void		choose_action::on_wake		(					) { get_overlay()->start_listening(this); }
+void		choose_action::on_stop		(					) { get_overlay()->stop_listening(); }
 #endif
 void		choose_action::on_hear		(int choice			) { parent->set_choice(choice); finish(); }
 string		choose_action::title		(					) { return labels[(type & action_skill) ? 2 : (int)type]; }

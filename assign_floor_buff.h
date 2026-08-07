@@ -19,6 +19,7 @@ private:
 	void kill() override {}
 	void on_wake() override;
 	void on_sleep() override {}
+	void on_stop() override;
 
 public:
 	assign_floor_buff(stats buff) : floor_buff(buff) {}

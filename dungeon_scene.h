@@ -72,5 +72,4 @@ public:
 
 	void clear_spotlight();
 
-	void stop();
 };

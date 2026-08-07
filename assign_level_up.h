@@ -20,6 +20,7 @@ private:
 	void kill() override {}
 	void on_wake() override;
 	void on_sleep() override {}
+	void on_stop() override;
 
 public:
 	assign_level_up(int levels) : to_assign(levels) { /*assigned.resize(get_players().size(), 0);*/ }

@@ -42,6 +42,7 @@
 //}
 
 void	assign_level_up::on_wake	() { get_overlay()->start_listening(this);	}
+void	assign_level_up::on_stop	() { get_overlay()->stop_listening(); }
 string	assign_level_up::title		() { return string("Award ", to_assign, " bonus levels"); }
 
 void assign_level_up::on_hear (int choice) {

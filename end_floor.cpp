@@ -41,7 +41,7 @@ void end_floor::update(float elapsed_time) {
 	{
 		boss_flag = BLIB::manager::find_first_of_type<boss_floor_flag>(); //@ƒ{ƒX‚È‚ç {3
 		if (boss_flag) {
-			BLIB::manager::get_task(boss_flag)->kill();
+			BLIB::manager::get_task(boss_flag)->stop();
 			event_log::record("It was a boss floor! Everyone gets 3 levels!");
 			for (auto& player : get_players()) { player->award_exp(3); }
 		}
@@ -138,4 +138,17 @@ void end_floor::update(float elapsed_time) {
 	finish();
 
 	END_COROUTINE;
+}
+
+void end_floor::on_stop() {
+	BLIB::task_id task = BLIB::manager::find_first_of_type<assign_level_up>();
+	if (task) BLIB::manager::get_task(task)->stop();
+
+	task = BLIB::manager::find_first_of_type<level_up>();
+	if (task) BLIB::manager::get_task(task)->stop();
+
+	task = BLIB::manager::find_first_of_type<revive_players>();
+	if (task) BLIB::manager::get_task(task)->stop();
+
+	finish();
 }

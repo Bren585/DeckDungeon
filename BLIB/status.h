@@ -50,6 +50,7 @@ namespace BLIB {
 			unloaded,	// This status is not ready.
 			inactive,	// This status is calling idle() every frame
 			active,		// This status is calling update() every frame
+			stopping,	// This status is calling idle() every frame, and is preparing to finish.
 			finished	// This status is calling idle() every frame, and is ready to be deleted.
 		};
 
@@ -70,10 +71,16 @@ namespace BLIB {
 
 		void force_wake	() { state = active;	on_wake	();	}
 		void force_sleep() { state = inactive;	on_sleep(); }
+		void force_stop	() { state = stopping;  on_stop (); }
 
 		virtual void	on_load		() { force_wake(); }
 		virtual void	on_wake		() {}
 		virtual void	on_sleep	() {}
+		virtual void	on_stop		() {}
+
+		virtual void	update		(float elapsed_time)	{ finish(); }
+		virtual void	idle		(float elapsed_time)	{			}
+		virtual void	try_stop	()						{ finish(); }
 
 	public:
 		virtual ~status() { preservatives.clear(); if (loader) { while (!loader->joinable()); loader->join(); delete loader; } }//{ _ASSERT_EXPR(loader == nullptr, L"Status deleted improperly"); }
@@ -90,21 +97,20 @@ namespace BLIB {
 		}
 
 		inline virtual void tick(float elapsed_time) { 
-			timer += elapsed_time;																				// Advance the timer
+			timer += elapsed_time;																							// Advance the timer
 			switch (state) {																					
-			case unloaded:	if (loader) { try_end_load(); }														// If unloaded and loading, check if done
-							else if (!loader) {loader = new std::thread(&status::coinit, this); }		break;	// Otherwise, if unloaded, spin up init thread
-			case active:	update(elapsed_time);														break;	// If active, update
-			default:		idle(elapsed_time);															break;	// Otherwise, idle
+			case unloaded:	if (loader) { try_end_load(); }																	// If unloaded and loading, check if done
+							else if (!loader) {loader = new std::thread(&status::coinit, this); }		break;				// Otherwise, if unloaded, spin up init thread
+			case active:	update(elapsed_time);														break;				// If active, update
+			case stopping:  try_stop();																	[[fallthrough]];	// If stopping, try to stop, and then idle
+			default:		idle(elapsed_time);															break;				// Otherwise, idle
 			}
 		};
 
-		void			wake	()	{ if (state != inactive)	{ return; } force_wake	();	}
-		void			sleep	()	{ if (state != active)		{ return; } force_sleep	();	}
+		void			wake	()	{ if (state != inactive)					{ return; } force_wake	();	}
+		void			sleep	()	{ if (state != active)						{ return; } force_sleep	();	}
+		void			stop	()	{ if (state != inactive && state != active)	{ return; }	force_stop	(); }
 		virtual void	kill	()	{} // Ubruptly end the task because I'm about to delete you
-
-		virtual void update	(float elapsed_time) { finish(); }
-		virtual void idle	(float elapsed_time) {}
 
 		activity	report		() const { return state; }
 		float		get_time	() const { return timer; }

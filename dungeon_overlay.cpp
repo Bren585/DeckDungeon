@@ -181,9 +181,10 @@ void dungeon_overlay::update(float elapsed_time) {
 		}
 	}
 
+	// ログスクロール
 	if (BLIB::collision::check(mouse, log_canvas.peek_collider(), true)) {
-		int scroll = static_cast<int>(BLIB::input::get_mouse_scroll() * 0.01f);
-		if (scroll != 0) log_start_index = clamp(0, log_start_index + scroll, event_log::get().size());
+		float scroll = BLIB::input::get_mouse_scroll() * 0.01f;
+		if (non_zero(scroll)) log_start_index = (int)clamp(0, (float)log_start_index + scroll, (float)event_log::get().size());
 	}
 
 	//選択アップデート
@@ -193,6 +194,15 @@ void dungeon_overlay::update(float elapsed_time) {
 	if (announcements.size() > 0) {
 		if (announcements.front().timer < 0) { announcements.pop(); }
 		else { announcements.front().timer -= elapsed_time; }
+	}
+
+	//　ゲーム終了
+	if (BLIB::input::state(key::Esc)) {
+		exit_timer += elapsed_time;
+		if (exit_timer > exit_duration) { get_dm()->stop(); }
+	} 
+	if (BLIB::input::release(key::Esc)) {
+		exit_timer = 0;
 	}
 }
 
@@ -205,6 +215,7 @@ void dungeon_overlay::render_log() const {
 		last_log_count = messages.size();
 		last_log_start_index = log_start_index;
 		log_canvas.clear();
+
 		//定義
 		const float2 font_size = { 8, 16 };
 		const float buffer = 5;
@@ -213,13 +224,15 @@ void dungeon_overlay::render_log() const {
 		float4 white = { 1, 1, 1, 1 };
 		float4 fade = { 1, 1, 1, 0 };
 		int skip = log_start_index;
+
 		//新しいログを上にし、古ければ古いほど色を薄くする
 		for (auto rit = messages.rbegin(); (rit != messages.rend()) && (y > 0); rit++) {
 			if (skip > 0) { skip--; continue; } //　スタートインデックスまで飛ばします
 			y -= log_canvas.type(*rit, { x, y }, { 0.5f, 0.5f }, "Arial", lerp(fade, white, y / LOG_I_H), C_TL) + buffer;
 		}
 
-		log_canvas.type(log_start_index, float2(0), float2(2));
+		//　スクロールデバッグ
+		//log_canvas.type(log_start_index, float2(0), float2(2));
 	}
 }
 
@@ -441,6 +454,13 @@ void dungeon_overlay::draw(BLIB::render_settings rs) const {
 		a = 1 - powf(2 * (a - 0.5f), 8);
 		type(front.message, SCN_C - float2{2},	float2(4), FONT_DEFAULT, color(0, 0, 0, a), C_CC);
 		type(front.message, SCN_C,				float2(4), FONT_DEFAULT, color(1, 1, 1, a), C_CC);
+	}
+
+	//　ゲーム終了
+	if (exit_timer > 0.1f) {
+		float percent = clamp(0, (exit_timer + 0.2f) / exit_duration, 1);
+
+		type("Exiting...", { 5, BLIB::window::size().y }, float2(1), FONT_DEFAULT, color(1, 0, 0, percent), C_TL);
 	}
 
 	////デバッグ

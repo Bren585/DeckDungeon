@@ -43,5 +43,4 @@ public:
 
 	//ì‚Á‚½ƒLƒƒƒ‰î•ñ‚ğ‚±‚ê‚Å‰ï“¾
 	character_data get_character_data();
-	void stop() { finish(); }
 };

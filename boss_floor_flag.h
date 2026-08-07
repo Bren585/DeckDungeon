@@ -11,7 +11,7 @@ private:
 	void idle(float elapsed_time) override {}
 
 	// Optional
-	void kill() override { finish(); }
+	void kill() override {}
 	void on_wake() override {}
 	void on_sleep() override {}
 

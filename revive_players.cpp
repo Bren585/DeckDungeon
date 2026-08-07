@@ -11,6 +11,7 @@ revive_players::revive_players(character* shaman, std::vector<character*>& dead_
 }
 
 void	revive_players::on_wake		() { get_overlay()->start_listening(this);	}
+void	revive_players::on_stop		() { get_overlay()->stop_listening();		}
 int		revive_players::show_info	() { return shaman->get_id();				}
 
 string revive_players::title() {

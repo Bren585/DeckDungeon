@@ -25,6 +25,7 @@
 //}
 
 void	choose_skill::on_wake	(					) { get_overlay()->start_listening(this);	}
+void	choose_skill::on_stop	(					) { get_overlay()->stop_listening();		}
 void	choose_skill::update	(float elapsed_time	) {											}
 void	choose_skill::on_hear	(int choice			) { parent->set_choice(choice); finish();	}
 string	choose_skill::title		(					) { return "Choose a Skill";				}

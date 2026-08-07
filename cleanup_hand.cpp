@@ -78,3 +78,5 @@ void cleanup_hand::on_hear(int choice) {
 		else { sleep(); }
 	}
 }
+
+void cleanup_hand::on_stop() { get_overlay()->stop_listening(); }

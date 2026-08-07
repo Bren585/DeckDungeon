@@ -23,6 +23,8 @@
 //}
 
 void	assign_floor_buff::on_wake	() { get_overlay()->start_listening(this);	}
+void	assign_floor_buff::on_stop	() { get_overlay()->stop_listening(); }
+
 string	assign_floor_buff::title	() { return "Choose a character to buff";	}
 
 void assign_floor_buff::on_hear	(int choice) {

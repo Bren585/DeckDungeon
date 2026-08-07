@@ -142,9 +142,7 @@ void title_scene::update(float elapsed_time) {
 
 }
 
-void title_scene::idle(float elapsed_time) {
-
-}
+void title_scene::idle(float elapsed_time) {}
 
 void title_scene::on_wake() { 
 	if (tt_id) { //　チュートリアルから戻ったので、チュートリアルを消します。

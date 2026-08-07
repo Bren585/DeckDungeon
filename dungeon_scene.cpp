@@ -65,10 +65,6 @@ void dungeon_scene::kill() {
 	
 }
 
-void dungeon_scene::stop() {
-	finish();
-}
-
 void dungeon_scene::update(float elapsed_time) {
 	idle(elapsed_time);
 }

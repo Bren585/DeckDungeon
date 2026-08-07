@@ -31,6 +31,9 @@ private:
 	struct announcement { string message; float timer; float max; };
 	std::queue<announcement> announcements;
 
+	const float exit_duration = 2;
+	float exit_timer = 0;
+
 	// Strictly Required for function
 	void init() override;
 	void update(float elapsed_time) override;
@@ -65,8 +68,6 @@ public:
 	void stop_listening() { listener = nullptr; choice_prompts.clear(); prompt_buttons.clear(); if (on_deck != no_show) { on_deck = no_show; } }
 
 	void announce(string message, float duration = 2.0f) { announcements.push({ message, duration, duration }); }
-
-	void stop() { finish(); }
 };
 
 inline dungeon_overlay* get_overlay() { return static_cast<dungeon_overlay*>(BLIB::manager::get_scene(BLIB::manager::find_first_of_type<dungeon_overlay>())); }

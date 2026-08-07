@@ -23,6 +23,7 @@ private:
 	void kill() override {}
 	void on_wake() override {}
 	void on_sleep() override {}
+	void on_stop() override;
 
 public:
 	end_floor() {}
