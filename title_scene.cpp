@@ -55,7 +55,7 @@ void title_scene::init() {
 	delete_button.get_collider()->set_off(delete_button.pivot * delete_button.get_size() * -0.5f);
 }
 
-void title_scene::kill() {}
+void title_scene::uninit() {}
 
 void title_scene::update(float elapsed_time) { 
 	// “ü—Í

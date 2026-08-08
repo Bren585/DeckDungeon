@@ -53,7 +53,7 @@ private:
 	void try_stop() override { update(0); }
 
 	// Optional
-	void kill() override;
+	void uninit() override;
 	void on_wake() override {}
 	void on_sleep() override {}
 	void on_stop() override;

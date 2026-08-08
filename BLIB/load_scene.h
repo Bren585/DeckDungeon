@@ -78,7 +78,7 @@ namespace BLIB {
 		void update	(float elapsed_time)		override { if (manager::peek_task(scene_id)->report() != status::unloaded) { manager::stage(scene_id, slot, exit_transition, exit_duration); finish(); } idle(elapsed_time); }
 		void idle	(float elapsed_time)		override { load_icon.angle += spin_speed * elapsed_time; }
 		void draw	(render_settings)	const	override { background.render(); text::out(load_text, float2{16}, float2{2}, load_font, text_color, C_BL); load_icon.render(); }
-		void kill	()							override { /*if (manager::peek(scene_id)->report() != status::active) manager::kill(scene_id);*/ }
+		void uninit	()							override { /*if (manager::peek(scene_id)->report() != status::active) manager::uninit(scene_id);*/ }
 
 	};
 

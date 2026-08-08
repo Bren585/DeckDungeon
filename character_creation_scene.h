@@ -32,7 +32,7 @@ private:
 	void draw_transparent() const override;
 
 	// Optional
-	void kill() override {}
+	void uninit() override {}
 	void on_wake() override { name = ""; selected_class = class_armorer; }
 	void on_sleep() override {}
 

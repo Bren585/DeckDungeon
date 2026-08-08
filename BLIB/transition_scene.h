@@ -67,24 +67,24 @@ namespace BLIB {
 					from_scene->tint.a = clamp(0.0f, 1 - timer / duration, 1.0f);
 				}
 
-				if (from_scene) { from_scene->render(); }
-				if (to_scene)	{ to_scene->render(); }
+				if (from_scene	) { from_scene	->render(); }
+				if (to_scene	) { to_scene	->render(); }
 				break;
 			}
 		} 
 
-		void kill() override {
+		void uninit() override {
 			switch (t) {
 			case transition::none:
 				break;
 			case transition::fade:
-				if (from_scene) { from_scene->tint.a = 1; }
-				if (to_scene) { to_scene->tint.a = 1; }
+				if (from_scene	) { from_scene	->tint.a = 1; }
+				if (to_scene	) { to_scene	->tint.a = 1; }
 				break;
 			}
 
-			if (from_scene) { from_scene->unpreserve(this); }
-			if (to_scene)	{ to_scene	->unpreserve(this); manager::stage(to_scene_id, slot); }
+			if (from_scene	) { from_scene	->unpreserve(this); }
+			if (to_scene	) { to_scene	->unpreserve(this); manager::stage(to_scene_id, slot); }
 		}
 
 	};

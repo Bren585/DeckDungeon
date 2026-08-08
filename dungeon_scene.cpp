@@ -61,7 +61,7 @@ void dungeon_scene::init() {
 	spot_light.set_intensity(10);
 }
 
-void dungeon_scene::kill() {
+void dungeon_scene::uninit() {
 	
 }
 

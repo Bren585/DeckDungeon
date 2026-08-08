@@ -11,7 +11,7 @@
 	init()		: Called while being constructed.
 	update()	: Called once a frame while awake.
 	idle()		: Called once a frame while not awake.
-	kill()		: Called just before forced cleanup.
+	uninit()	: Called just before forced cleanup.
 	on_wake()	: Called once when awoken.
 	on_sleep()  : Called once when put to sleep.
 
@@ -40,7 +40,7 @@ private:
 	void idle(float elapsed_time) override {}
 
 	// Optional
-	void kill() override {}
+	void uninit() override {}
 	void on_wake() override {}
 	void on_sleep() override {}
 
@@ -89,7 +89,7 @@ private:
 	void idle(float elapsed_time) override {}
 
 	// Optional
-	void kill() override {}
+	void uninit() override {}
 	void on_wake() override {}
 	void on_sleep() override {}
 
@@ -127,7 +127,7 @@ private:
 	void draw_transparent() const override {}
 
 	// Optional
-	void kill() override {}
+	void uninit() override {}
 	void on_wake() override {}
 	void on_sleep() override {}
 

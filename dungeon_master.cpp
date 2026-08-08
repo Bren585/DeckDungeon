@@ -130,7 +130,7 @@ void dungeon_master::update(float elapsed_time) {
 	END_COROUTINE;
 }
 
-void dungeon_master::kill() { 
+void dungeon_master::uninit() { 
 	for (auto& player : players) { delete player; } 
 	for (auto& enemy : enemies) { delete enemy; } 
 }
@@ -149,4 +149,9 @@ void dungeon_master::on_stop() {
 	if (task) { BLIB::manager::get_task(task)->stop(); }
 
 	GO_TO_CHECKPOINT(dungeon_end);
+}
+
+void dungeon_master::try_stop() {
+	update(0);
+	if (BLIB::manager::find_first_of_type<begin_floor>() == 0) { finish(); }
 }

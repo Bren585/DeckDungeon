@@ -35,7 +35,10 @@
 	idle()
 		Called every frame when asleep.
 
-	kill()
+	try_stop()
+		Called every frame while attempting to force stop.
+
+	uninit()
 		Called just before deletion. This is the chance to stop 
 		processes that depend on this status or release resources.
 
@@ -110,7 +113,7 @@ namespace BLIB {
 		void			wake	()	{ if (state != inactive)					{ return; } force_wake	();	}
 		void			sleep	()	{ if (state != active)						{ return; } force_sleep	();	}
 		void			stop	()	{ if (state != inactive && state != active)	{ return; }	force_stop	(); }
-		virtual void	kill	()	{} // Ubruptly end the task because I'm about to delete you
+		virtual void	uninit	()	{} // Ubruptly end the task because I'm about to delete you
 
 		activity	report		() const { return state; }
 		float		get_time	() const { return timer; }

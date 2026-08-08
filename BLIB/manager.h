@@ -50,6 +50,16 @@ namespace BLIB {
 		// Optionally, the scene can transitioned out.
 		int			unstage			(task_id id, transition t = transition::none, float duration = 0.0f);
 		
+		// Returns the the first task of the given type.
+		template <class S>
+		S* get_first_of_type() {
+			for (auto& pair : _private::get_tasks()) {
+				S* ptr = dynamic_cast<S*>(pair.second.get());
+				if (ptr) { return ptr; }
+			}
+			return 0;
+		}
+
 		// Returns the task_id of the first task of the given type.
 		template <class S>
 		task_id find_first_of_type() {

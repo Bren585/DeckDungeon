@@ -25,12 +25,14 @@
 		- called every frame while awake. The "logic" of the scene.
 	status::idle
 		- called every frame while asleep.
+	try_stop()
+		- called every frame while attempting to force stop.
 	scene::draw
 		- all render calls should be made inside this function.
 
 	The following functions are available to be overridden:
 
-	status::kill
+	status::uninit
 		- called just before the scene is destroyed. This is an
 		  opportunity to release resources or stop processes.
 	status::on_wake
@@ -96,10 +98,12 @@ namespace BLIB {
 			virtual void idle	(float elapsed_time)	override = 0;
 
 			////	inherited methods from status
+			// virtual void try_stop() {}
 			// 
-			// virtual void kill() {}
+			// virtual void uninit() {}
 			// virtual void on_wake() {}
 			// virtual void on_sleep() {}
+			// virtual void on_stop() {}
 
 			virtual void _render(const camera* cam) const = 0;
 			virtual void render(const camera* cam = nullptr, const environment_lights* scene_lights = nullptr, const std::vector<light>* lights = nullptr) const;

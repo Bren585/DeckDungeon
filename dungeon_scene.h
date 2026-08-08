@@ -38,7 +38,7 @@ private:
 	void draw_transparent() const override;
 
 	// Optional
-	void kill() override;
+	void uninit() override;
 	void on_wake() override {}
 	void on_sleep() override {}
 

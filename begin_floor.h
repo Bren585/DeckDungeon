@@ -19,12 +19,13 @@ private:
 	// Strictly Required for function
 	void init() override {}
 	void update(float elapsed_time) override;
+	void try_stop() override;
 
 	// Required, but {} is acceptable
 	void idle(float elapsed_time) override {}
 
 	// Optional
-	void kill() override {}
+	void uninit() override {}
 	void on_wake() override {}
 	void on_sleep() override {}
 	void on_stop() override;
