@@ -245,6 +245,8 @@ void begin_floor::on_stop() {
 
 	task = BLIB::manager::find_first_of_type<load_enemy>();
 	if (task) BLIB::manager::get_task(task)->stop();
+}
 
-	finish();
+void begin_floor::try_stop() {
+	if (BLIB::manager::find_first_of_type<load_enemy>() == 0) { finish(); }
 }

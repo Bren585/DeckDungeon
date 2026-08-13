@@ -50,7 +50,7 @@ private:
 
 	// Required, but {} is acceptable
 	void idle(float elapsed_time) override {}
-	void try_stop() override { update(0); }
+	void try_stop() override;
 
 	// Optional
 	void uninit() override;

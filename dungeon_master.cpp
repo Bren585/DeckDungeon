@@ -117,6 +117,9 @@ void dungeon_master::update(float elapsed_time) {
 	get_scene()->stop();
 	get_overlay()->stop();
 
+	// 途中に止められたら、敵のロード中かもしれない。そのため、待つ。
+	YIELD_WHILE(BLIB::manager::find_first_of_type<begin_floor>());
+
 	// シーン切り替え終わりまで待つ
 	YIELD_WHILE(BLIB::manager::find_first_of_type<BLIB::transition_scene>());
 
@@ -125,6 +128,7 @@ void dungeon_master::update(float elapsed_time) {
 
 	//タイトル画面へ
 	BLIB::manager::stage(BLIB::manager::find_first_of_type<title_scene>(), 0, BLIB::transition::fade, 0.5f);
+
 	finish();
 
 	END_COROUTINE;
@@ -151,7 +155,4 @@ void dungeon_master::on_stop() {
 	GO_TO_CHECKPOINT(dungeon_end);
 }
 
-void dungeon_master::try_stop() {
-	update(0);
-	if (BLIB::manager::find_first_of_type<begin_floor>() == 0) { finish(); }
-}
+void dungeon_master::try_stop() { update(0); }

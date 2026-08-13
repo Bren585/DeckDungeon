@@ -285,16 +285,18 @@ void dungeon_overlay::render_info() const {
 				pen.y -= info_canvas.type(message, pen, float2{ 0.4f }, "Arial", WHITE, C_TL) + half_padding;
 
 				message = string("ATK : ", s.attack);
-				if (b.attack) { 
-					color tint = (b.attack < 0) ? RED : BLUE;
-					message += string(TEXT_COLOR(tint), " (", b.attack + b.luck, ")", TEXT_COLOR(WHITE));
+				int attack_buff = b.attack + b.luck;
+				if (attack_buff) {
+					color tint = (attack_buff < 0) ? RED : BLUE;
+					message += string(TEXT_COLOR(tint), " (", attack_buff, ")", TEXT_COLOR(WHITE));
 				}
 				pen.y -= info_canvas.type(message, pen, float2{ 0.4f }, "Arial", WHITE, C_TL) + half_padding;
 
 				message = string("DEF : ", s.defense);
-				if (b.defense) {
-					color tint = (b.attack < 0) ? RED : BLUE;
-					message += string(TEXT_COLOR(tint), " (", b.defense + b.luck, ")", TEXT_COLOR(WHITE));
+				int defence_buff = b.defense + b.luck;
+				if (defence_buff) {
+					color tint = (defence_buff < 0) ? RED : BLUE;
+					message += string(TEXT_COLOR(tint), " (", defence_buff, ")", TEXT_COLOR(WHITE));
 				}
 				pen.y -= info_canvas.type(message, pen, float2{ 0.4f }, "Arial", WHITE, C_TL) + half_padding;
 

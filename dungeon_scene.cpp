@@ -11,31 +11,6 @@ constexpr float character_gap = 4.0f;
 constexpr float spawn_z = -8.0f;
 constexpr float enemy_spawn_z = 16.0f;
 
-//void imgui_character_window(const character* c) {
-//	if (ImGui::Begin(c->get_name())) {
-//		const stats base = c->get_stats();
-//		const stats buff = c->get_buffs();
-//		string text = string("Health: ", c->get_health(), "/", base.health);
-//		ImGui::Text(text);
-//		text = string("Attack: ", base.attack, " (", buff.attack, ")");
-//		ImGui::Text(text);
-//		text = string("Defense: ", base.defense, " (", buff.defense, ")");
-//		ImGui::Text(text);
-//		text = string("Luck: ", base.luck);
-//		ImGui::Text(text);
-//		ImGui::Text("- hand ----------------------");
-//		const pile& hand = c->peek_hand();
-//		for (const card& card : hand) {
-//			text = card;
-//			ImGui::Text(text);
-//		}
-//
-//		int total_cards = int(c->peek_deck().size() + c->peek_hand().size());
-//		if (total_cards != 52 && total_cards != 0) ImGui::Text("I'm missing cards!!");
-//	}
-//	ImGui::End();
-//}
-
 void dungeon_scene::init() {
 	//ÉVÅ[Éìê›íË
 	cam = BLIB::perspective_camera(BLIB::window::size(), float3{ 18.5f, 25, -23.5f }, float3{ 8.5f, 0, 8.5f });

@@ -9,7 +9,7 @@ class character;
 
 #define scene_center float3{8, 1, 8}
 
-#define get_dungeon_scene() static_cast<dungeon_scene*>(BLIB::manager::get_scene(BLIB::manager::find_first_of_type<dungeon_scene>()))
+#define get_dungeon_scene() BLIB::manager::get_first_of_type<dungeon_scene>()
 
 class dungeon_scene : public BLIB::full::scene {
 private:
